@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBConnector {
     static final String DB_URL = "jdbc:postgresql://195.49.215.164/marketplace";
     static final String USER = "marketplace";
-    static final String PASSWORD = "marketplace";
+    static final String PASSWORD = "Qqwerty1!";
 
     private Connection connection;
 
