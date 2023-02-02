@@ -4,14 +4,14 @@ import java.sql.Connection;
 
 import db.DBConnector;
 
-public class Contoller {
+public class Controller {
     private Connection connection;
 
-    public Contoller() {
+    public Controller() {
         setConnection(new DBConnector());
     }
 
-    public Contoller(DBConnector dbConnector) {
+    public Controller(DBConnector dbConnector) {
         setConnection(dbConnector);
     }
 

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Product;
-import models.Contoller;
+import models.Controller;
 
-public class ProductController extends Contoller {
+public class ProductController extends Controller {
     public void addProduct(Product product) {
         try {
             PreparedStatement statement = getConnection().prepareStatement(
