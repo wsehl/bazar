@@ -1,18 +1,18 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Statement;
+
+import db.DBConnector;
 
 public class App {
-    static final String DB_URL = "jdbc:postgresql://195.49.215.164/marketplace";
-    static final String USER = "marketplace";
-    static final String PASSWORD = "marketplace";
-
     public static void main(String[] args) throws Exception {
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-                Statement stmt = conn.createStatement();) {
+        Connection connection = new DBConnector().getConnection();
+
+        try {
+            Statement stmt = connection.createStatement();
             System.out.println("Connected to the PostgreSQL server successfully.");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-
     }
 }
