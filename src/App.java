@@ -2,14 +2,12 @@ import controllers.ProductController;
 import models.Product;
 import java.util.Scanner;
 
-import javax.lang.model.util.ElementFilter;
-
 public class App {
     public static void main(String[] args) throws Exception {
         ProductController productController = new ProductController();
         Scanner scanner = new Scanner(System.in);
         boolean isActive = true;
-        
+
         while (isActive) {
             int input = 0;
             System.out.println("\nChoose option:\n" +
@@ -140,7 +138,7 @@ public class App {
                     }
                 }
             }
-            else if (input == 5) {
+            else if (input == 5) { // terminate loop
                 isActive = false;
             }
             else {
@@ -148,8 +146,7 @@ public class App {
             }
         }
 
-
-
+        scanner.close();
 
     }
 }
