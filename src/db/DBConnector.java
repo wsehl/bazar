@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import exceptions.NoDatabaseConnectionException;
+
 public class DBConnector {
     static final String DB_URL = "jdbc:postgresql://195.49.215.164/marketplace";
     static final String USER = "marketplace";
@@ -11,11 +13,11 @@ public class DBConnector {
 
     private Connection connection;
 
-    public DBConnector() {
+    public DBConnector() throws Exception {
         try {
             this.connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new NoDatabaseConnectionException("Can't connect to database");
         }
     }
 

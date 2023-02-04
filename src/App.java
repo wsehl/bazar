@@ -1,4 +1,5 @@
 import controllers.ProductController;
+import exceptions.NoDatabaseConnectionException;
 import models.Product;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,6 +13,7 @@ public class App {
 
         boolean isActive;
         ProductController productController = new ProductController();
+
         Scanner scanner = new Scanner(System.in);
         clearConsole();
 
