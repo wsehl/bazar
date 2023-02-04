@@ -1,12 +1,32 @@
 import controllers.ProductController;
 import models.Product;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class App {
+
+    private static BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception {
+        
+        boolean isActive;
+
+        System.out.print("Login: ");
+        String login=br.readLine();
+
+        System.out.print("Password: ");
+        String password=br.readLine();
+
         ProductController productController = new ProductController();
         Scanner scanner = new Scanner(System.in);
-        boolean isActive = true;
+
+        if(login.equals("0") && password.equals("0")){
+            isActive = true;
+        }
+        else {
+            isActive = false;
+        }
+
         clearConsole();
 
         while (isActive) {
