@@ -1,10 +1,11 @@
-import controllers.ProductController;
-import exceptions.*;
-import models.Product;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
+
+import controllers.ProductController;
+import exceptions.*;
+import models.Product;
 
 public class App {
 
@@ -68,7 +69,11 @@ public class App {
                         System.out.println("Enter product ID: ");
                         int productId = scanner.nextInt();
                         clearConsole();
-                        System.out.println(productController.getProductById(productId) + "\n");
+                        try {
+                            System.out.println(productController.getProductById(productId) + "\n");
+                        } catch (ObjectNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
                         break;
                     }
                     case 3: {
@@ -86,6 +91,12 @@ public class App {
                 System.out.print("Enter product ID: ");
                 productId = scanner.nextInt();
                 clearConsole();
+                try {
+                    updatedProduct = productController.getProductById(productId);
+                } catch (ObjectNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    continue;
+                }
                 System.out.println("UPDATE PRODUCT: " + productId + "\nChoose option:\n" +
                         "1 - Update name\n" +
                         "2 - Update price\n" +
@@ -100,8 +111,7 @@ public class App {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new name: ");
                         name = br.readLine();
-
-                        updatedProduct = productController.getProductById(productId);
+                        
                         updatedProduct.setName(name);
                         productController.updateProduct(productId, updatedProduct);
                         System.out.println("Product " + productId + " name changed to \"" + name + "\"\n");
@@ -112,7 +122,6 @@ public class App {
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new price: ");
                         price = scanner.nextDouble();
 
-                        updatedProduct = productController.getProductById(productId);
                         updatedProduct.setPrice(price);
                         productController.updateProduct(productId, updatedProduct);
 
@@ -124,12 +133,10 @@ public class App {
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new description: ");
                         description = br.readLine();
 
-                        updatedProduct = productController.getProductById(productId);
                         updatedProduct.setDescription(description);
                         productController.updateProduct(productId, updatedProduct);
 
-                        System.out
-                                .println("Product " + productId + " description changed to \"" + description + "\"\n");
+                        System.out.println("Product " + productId + " description changed to \"" + description + "\"\n");
                         break;
                     }
                     case 4: {
@@ -151,8 +158,8 @@ public class App {
                 Product product = new Product(name, description, price);
                 productController.addProduct(product);
                 clearConsole();
-
-                System.out.println("Product \"" + name + "\"  has been added to database.\n");
+                // fix getId in class Product
+                System.out.println("Product \"" + name + "\"  has been added to database with id: " + product.getId() + ".\n");
             } else if (input == 4) { // delete product
                 clearConsole();
                 System.out.print("Enter product id: ");
@@ -167,7 +174,13 @@ public class App {
                         System.out.println("Wrong input!\n");
                         break;
                     case "y": {
-                        productController.deleteProduct(productId);
+                        try {
+                            productController.deleteProduct(productId);
+                        } catch (ObjectNotFoundException e) {
+                            clearConsole();
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         clearConsole();
                         System.out.println("Product " + productId + " has been deleted successfully\n");
                     }

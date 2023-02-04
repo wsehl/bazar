@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.ObjectNotFoundException;
 import models.Product;
 import models.Controller;
 
@@ -45,7 +46,7 @@ public class ProductController extends Controller {
         return products;
     }
 
-    public Product getProductById(int id) {
+    public Product getProductById(int id) throws ObjectNotFoundException {
         try {
             PreparedStatement statement = getConnection()
                     .prepareStatement("SELECT * FROM products WHERE product_id = ?");
@@ -61,7 +62,7 @@ public class ProductController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new ObjectNotFoundException("Product " + id + " wasn't found");
     }
 
     public void updateProduct(int id, Product updatedProduct) {
@@ -78,13 +79,14 @@ public class ProductController extends Controller {
         }
     }
 
-    public void deleteProduct(int id) {
-        try {
+    public void deleteProduct(int id) throws ObjectNotFoundException {
+        try { // make deleteProduct(Product product), not (int id)
+            Product product = getProductById(id); 
             PreparedStatement statement = getConnection().prepareStatement("DELETE FROM products WHERE product_id = ?");
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ObjectNotFoundException("Product " + id + " wasn't found");
         }
     }
 }
