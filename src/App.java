@@ -1,8 +1,9 @@
 import controllers.ProductController;
-import exceptions.NoDatabaseConnectionException;
+import exceptions.*;
 import models.Product;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -54,7 +55,12 @@ public class App {
                         break;
                     case 1: { // output all products
                         clearConsole();
-                        productController.getProducts().forEach(System.out::println);
+                        List<Product> products = productController.getProducts();
+                        if (products.size() < 1) {
+                            System.out.println("Database is empty");
+                            break;
+                        }
+                        products.forEach(System.out::println);
                         break;
                     }
                     case 2: { // output product by id
