@@ -10,6 +10,9 @@ import models.Product;
 import models.Controller;
 
 public class ProductController extends Controller {
+
+    public ProductController() throws Exception {}
+
     public void addProduct(Product product) {
         try {
             PreparedStatement statement = getConnection().prepareStatement(

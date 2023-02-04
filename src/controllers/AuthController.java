@@ -10,6 +10,9 @@ import models.User;
 import models.Controller;
 
 public class AuthController extends Controller {
+
+    public AuthController() throws Exception {}
+
     public User register(String firstName, String lastName, String email, String password) {
         try {
             // Hash the password

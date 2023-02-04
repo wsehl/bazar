@@ -7,7 +7,7 @@ import db.DBConnector;
 public class Controller {
     private Connection connection;
 
-    public Controller() {
+    public Controller() throws Exception {
         setConnection(new DBConnector());
     }
 
