@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import exceptions.NoDatabaseConnectionException;
 
 public class DBConnector {
-    static final String DB_URL = "jdbc:postgresql://195.49.215.164/marketplace";
-    static final String USER = "marketplace";
+    static final String DB_URL = "jdbc:postgresql://194.87.106.167/marketplace";
+    static final String USER = "postgres";
     static final String PASSWORD = "Qqwerty1!";
 
     private Connection connection;
