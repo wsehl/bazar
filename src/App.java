@@ -13,7 +13,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        boolean isActive;
+        
         ProductController productController = new ProductController();
 
         Scanner scanner = new Scanner(System.in);
@@ -25,15 +25,9 @@ public class App {
         System.out.print("Password: ");
         String password = br.readLine();
 
-        if (login.equals("0") && password.equals("0")) {
-            isActive = true;
-            clearConsole();
-        } else {
-            isActive = false;
-            clearConsole();
-            System.out.println("Login or password are incorrect!\n");
-        }
-
+        boolean isActive = (login.equals("0") && password.equals("0")) ? true : false;
+        clearConsole();
+        
         while (isActive) {
             int input = -1;
             System.out.println("Choose option:\n" +
