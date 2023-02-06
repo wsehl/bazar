@@ -13,9 +13,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        
         ProductController productController = new ProductController();
-        
+
         Scanner scanner = new Scanner(System.in);
         clearConsole();
 
@@ -27,7 +26,7 @@ public class App {
 
         boolean isActive = (login.equals("0") && password.equals("0")) ? true : false;
         clearConsole();
-        
+
         while (isActive) {
             int input = -1;
             System.out.println("Choose option:\n" +
@@ -105,7 +104,7 @@ public class App {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new name: ");
                         name = br.readLine();
-                        
+
                         updatedProduct.setName(name);
                         productController.updateProduct(productId, updatedProduct);
                         System.out.println("Product " + productId + " name changed to \"" + name + "\"\n");
@@ -130,7 +129,8 @@ public class App {
                         updatedProduct.setDescription(description);
                         productController.updateProduct(productId, updatedProduct);
 
-                        System.out.println("Product " + productId + " description changed to \"" + description + "\"\n");
+                        System.out
+                                .println("Product " + productId + " description changed to \"" + description + "\"\n");
                         break;
                     }
                     case 4: {
@@ -156,10 +156,10 @@ public class App {
                 }
 
                 Product product = new Product(name, description, price);
-                productController.addProduct(product);
+                int productId = productController.addProduct(product);
                 clearConsole();
-                // fix getId in class Product
-                System.out.println("Product \"" + name + "\"  has been added to database with id: " + product.getId() + ".\n");
+                System.out.println(
+                        "Product \"" + name + "\"  has been added to database with id: " + productId + ".\n");
             } else if (input == 4) { // delete product
                 clearConsole();
                 System.out.print("Enter product id: ");

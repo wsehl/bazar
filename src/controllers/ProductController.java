@@ -12,19 +12,28 @@ import models.Controller;
 
 public class ProductController extends Controller {
 
-    public ProductController() throws Exception {}
+    public ProductController() throws Exception {
+    }
 
-    public void addProduct(Product product) {
+    public int addProduct(Product product) {
         try {
             PreparedStatement statement = getConnection().prepareStatement(
-                    "INSERT INTO products (product_name, product_description, product_price) VALUES (?, ?, ?)");
+                    "INSERT INTO products (product_name, product_description, product_price) VALUES (?, ?, ?) RETURNING product_id");
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
             statement.setDouble(3, product.getPrice());
-            statement.executeUpdate();
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int productId = resultSet.getInt("product_id");
+                return productId;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public List<Product> getProducts() {
@@ -81,7 +90,7 @@ public class ProductController extends Controller {
 
     public void deleteProduct(int id) throws ObjectNotFoundException {
         try { // make deleteProduct(Product product), not (int id)
-            Product product = getProductById(id); 
+            Product product = getProductById(id);
             PreparedStatement statement = getConnection().prepareStatement("DELETE FROM products WHERE product_id = ?");
             statement.setInt(1, id);
             statement.executeUpdate();
