@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ public class App {
 
         ProductController productController = new ProductController();
         AuthController authController = new AuthController();
+        Scanner scanner = new Scanner(System.in);
         User user = null;
         boolean isActive = false;
         clearConsole();
@@ -41,7 +43,7 @@ public class App {
                     "1 - Sign In\n" +
                     "2 - Sign Up");
 
-            input = Integer.parseInt(br.readLine());
+            input = scanner.nextInt();
 
             if (input == 1) {
                 clearConsole();
@@ -133,7 +135,7 @@ public class App {
                     "4 - Delete product\n" +
                     "5 - Close window");
 
-            input = Integer.parseInt(br.readLine());
+            input = scanner.nextInt();
 
             // output product
             if (input == 1) {
@@ -168,8 +170,9 @@ public class App {
                     case 2: {
                         clearConsole();
                         System.out.println("Enter product ID: ");
-                        int productId = Integer.parseInt(br.readLine());
+                        int productId = scanner.nextInt();
                         clearConsole();
+
                         try {
                             System.out.println(productController.getProductById(productId) + "\n");
                         } catch (ObjectNotFoundException e) {
@@ -193,8 +196,8 @@ public class App {
                 String description;
                 int productId;
 
-                System.out.print("Enter product ID: ");
-                productId = Integer.parseInt(br.readLine());
+                System.out.print("UPDATE PRODUCT\nEnter product ID: ");
+                productId = scanner.nextInt();
                 clearConsole();
 
                 try {
@@ -235,7 +238,7 @@ public class App {
                     case 2: {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new price: ");
-                        price = Double.parseDouble(br.readLine());
+                        price = scanner.nextDouble();
 
                         updatedProduct.setPrice(price);
                         productController.updateProduct(productId, updatedProduct);
@@ -281,16 +284,7 @@ public class App {
 
                 System.out.print("ADD NEW PRODUCT\nName: " + name + 
                         "\nPrice: ");
-                double price = -1.0;
-                while (true) {
-                    try {
-                        price = Double.parseDouble(br.readLine());
-                        break;
-                    } catch (NumberFormatException e) {
-                        clearConsole();
-                        System.out.print("Price's type should be double!\nPrice: ");
-                    }
-                }
+                double price = scanner.nextDouble();
                 clearConsole();
 
                 System.out.print("ADD NEW PRODUCT\nName: " + name + 
@@ -310,7 +304,7 @@ public class App {
             else if (input == 4) {
                 clearConsole();
                 System.out.print("Enter product id: ");
-                int productId = Integer.parseInt(br.readLine());
+                int productId = scanner.nextInt();
                 clearConsole();
 
                 System.out.print("DELETE PRODUCT: " + productId + "\nAre you sure? (y/n): ");
@@ -355,7 +349,8 @@ public class App {
         }
 
         br.close();
-
+        scanner.close();
+        
     }
 
 }
