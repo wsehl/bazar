@@ -64,7 +64,7 @@ public class App {
                     System.out.println("Wrong email or password!");
                     continue;
                 } else {
-                    System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!");
+                    System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!\n");
                     isActive = true;
                 }
             } else if (input == 2) {
@@ -125,7 +125,7 @@ public class App {
         while (isActive) {
             int input = -1;
 
-            System.out.println("\nACCOUNT: " + user.getEmail() + 
+            System.out.println("ACCOUNT: " + user.getEmail() + 
                     "\nChoose option:\n" +
                     "1 - Output product\n" +
                     "2 - Update product\n" +
@@ -160,6 +160,7 @@ public class App {
                         }
 
                         products.forEach(System.out::println);
+                        System.out.print("\n");
                         break;
                     }
 
@@ -219,6 +220,10 @@ public class App {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new name: ");
                         name = br.readLine();
+                        while (name.length() < 2) {
+                            System.out.print("UPDATE PRODUCT: " + productId + "\nName should be longer than 1!\nEnter new name: ");
+                            name = br.readLine();
+                        }
 
                         updatedProduct.setName(name);
                         productController.updateProduct(productId, updatedProduct);
@@ -244,6 +249,10 @@ public class App {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new description: ");
                         description = br.readLine();
+                        while (description.length() < 5) {
+                            System.out.print("UPDATE PRODUCT: " + productId + "\nDescription should be longer than 5!\nEnter new description: ");
+                            description = br.readLine();
+                        }
 
                         updatedProduct.setDescription(description);
                         productController.updateProduct(productId, updatedProduct);
@@ -262,16 +271,33 @@ public class App {
             else if (input == 3) {
                 clearConsole();
 
-                System.out.print("Enter new product's name: ");
-
+                System.out.print("ADD NEW PRODUCT\nName: ");
                 String name = br.readLine();
+                while (name.length() < 2) {
+                    System.out.print("Name should be longer than 1!\nName: ");
+                    name = br.readLine();
+                }    
+                clearConsole();
 
-                System.out.print("Enter new product's price: ");
-                double price = Double.parseDouble(br.readLine());
+                System.out.print("ADD NEW PRODUCT\nName: " + name + 
+                        "\nPrice: ");
+                double price = -1.0;
+                while (true) {
+                    try {
+                        price = Double.parseDouble(br.readLine());
+                        break;
+                    } catch (NumberFormatException e) {
+                        clearConsole();
+                        System.out.print("Price's type should be double!\nPrice: ");
+                    }
+                }
+                clearConsole();
 
-                System.out.print("Enter new product's description: ");
-
+                System.out.print("ADD NEW PRODUCT\nName: " + name + 
+                        "\nPrice: " + price +
+                        "\nDescription: ");
                 String description = br.readLine();
+                clearConsole();
 
                 Product product = new Product(name, description, price);
                 int productId = productController.addProduct(product);
