@@ -118,8 +118,7 @@ public class App {
                     continue;
                 }
                 clearConsole();
-                System.out.println("Cheers, mate, you've been registered\n" +
-                    "ACCOUNT: " + email);
+                System.out.println("Cheers, mate, you've been registered\n");
                 isActive = true;
             }
         }
@@ -350,7 +349,6 @@ public class App {
 
         br.close();
         scanner.close();
-        
-    }
 
+    }
 }
