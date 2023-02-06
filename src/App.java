@@ -38,7 +38,17 @@ public class App {
         clearConsole();
         while (isActive == false) {
             int input = -1;
-
+            System.out.println("________________________________\n");
+            System.out.println("████████████████████████████████\n" +
+                               "██░░░░██████░░░░████░░░░░░░░░░██\n"+ 
+                               "██░░░░░░██░░██████████░░████░░██\n"+
+                               "██░░░░██░░██░░░░████░░░░░░░░░░██\n"+
+                               "██░░░░██████░░░░████░░░░░░░░░░██\n"+
+                               "██░░░░██████░░░░████░░░░████████\n"+
+                               "████████████████████████████████\n");
+            System.out.println("________________________________");
+            System.out.println("\nWelcome to MarketPlace!(c)");
+            System.out.println("________________________________\n");
             System.out.println("Choose option:\n" +
                     "1 - Sign In\n" +
                     "2 - Sign Up");
@@ -178,7 +188,7 @@ public class App {
                 isActive = true;
             }
         }
-
+        
         while (isActive) {
             int input = -1;
 
