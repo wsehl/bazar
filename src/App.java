@@ -183,19 +183,15 @@ public class App {
                 clearConsole();
 
                 System.out.print("Enter new product's name: ");
-                String name = "";
-                while (name == "") {
-                    name = br.readLine();
-                }
+
+                String name = br.readLine();
 
                 System.out.print("Enter new product's price: ");
                 double price = Double.parseDouble(br.readLine());
 
                 System.out.print("Enter new product's description: ");
-                String description = "";
-                while (description == "") {
-                    description = br.readLine();
-                }
+
+                String description = br.readLine();
 
                 Product product = new Product(name, description, price);
                 int productId = productController.addProduct(product);
