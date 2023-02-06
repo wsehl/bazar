@@ -39,6 +39,7 @@ public class App {
             System.out.println("Wrong email or password!");
             return;
         } else {
+            clearConsole();
             System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!");
             isActive = true;
         }
