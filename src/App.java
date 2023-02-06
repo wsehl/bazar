@@ -104,12 +104,68 @@ public class App {
                     "\nEmail: " + email +
                     "\nPassword: ");
                 String password = br.readLine();
+                int hard=0;
                 while (password.length() < 8) {
-                    clearConsole();
-                    System.out.print("Password should be longer than 7!\nPassword: ");
+                    System.out.print("Password: ");
                     password = br.readLine();
+                    if (password.length()<8){
+                        clearConsole();
+                        System.out.println("Password must contain at least 8 symbols");
+                    }
+                    if (password.length()>=8){
+                        char c;
+                        String hardness="";
+                        boolean upperSymbol = false;
+                        boolean lowerSymbol = false;
+                        boolean digitSymbol = false;
+                        for (int i=0; i<password.length(); i++){
+                            c= password.charAt(i);
+                            if (Character.isDigit(c)){
+                                digitSymbol = true;
+                            }
+                            if (Character.isUpperCase(c)){
+                                upperSymbol = true;
+                            }
+                            if (Character.isLowerCase(c)){
+                                lowerSymbol = true;
+                            }
+                        }
+                        if(digitSymbol){
+                            hard+=1;
+                        }
+                        if(upperSymbol){
+                            hard+=1;
+                        }
+                        if(lowerSymbol){
+                            hard+=1;
+                        }
+                        switch(hard){
+                            case 1:
+                                hardness="|///______| Easy";
+                            case 2:
+                                hardness="|//////___| Medium";
+                            case 3:
+                                hardness="|/////////| Hard";
+
+                        }
+                        clearConsole();
+                        System.out.println("Your password is\n" + hardness);
+                        System.out.println("Are you sure?\n" +
+                                "1 - Yes!\n" +
+                                "2 - No..\n");
+                        input = Integer.parseInt(br.readLine());
+                        if (input == 1){
+                            break;
+                        }
+                        else{
+                            clearConsole();
+                            hard=0;
+                            hardness="";
+                            password="";
+                        }
+
+                    }
                 }
-                clearConsole();
 
                 try {
                     user = authController.register(name, surname, email, password, 1);
