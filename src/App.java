@@ -23,9 +23,8 @@ public class App {
         ProductController productController = new ProductController();
         AuthController authController = new AuthController();
         boolean isActive = false;
-
+        clearConsole();
         while (isActive == false) {
-
             int input = -1;
 
             System.out.println("Choose option:\n" +
@@ -55,21 +54,53 @@ public class App {
                     isActive = true;
                 }
             } else if (input == 2) {
-                System.out.print("First name: ");
-                String name = br.readLine();
 
-                System.out.print("Second name: ");
-                String surname = br.readLine();
+                String name = "";
+                while (name.length() < 2) {
+                    System.out.print("First name: ");
+                    name = br.readLine();
+                    if (name.length() < 2) {
+                        clearConsole();
+                        System.out.println("First name must contain at least 2 symbols");
+                    }
+                }
 
-                System.out.print("Email: ");
-                String mail = br.readLine();
+                String surname = "";
+                while (surname.length() < 2) {
+                    System.out.print("Second name: ");
+                    surname = br.readLine();
+                    if (surname.length() < 2) {
+                        clearConsole();
+                        System.out.println("Second name must contain at least 2 symbols");
+                    }
+                }
 
-                System.out.print("Password: ");
-                String password = br.readLine();
+                String mail = "";
+                while (mail.length() < 4) {
+                    System.out.print("Email: ");
+                    mail = br.readLine();
+                    if (!mail.contains("@")) {
+                        clearConsole();
+                        System.out.println("Wrong email format");
+                        mail="";
+                    }
+                }
 
-                try{
+
+                String password = "";
+                while (password.length() < 8) {
+                    System.out.print("Password: ");
+                    password = br.readLine();
+                    if (password.length()<8){
+                        clearConsole();
+                        System.out.println("Password must contain at least 8 symbols");
+                    }
+                }
+
+                try {
                     User user = authController.register(name, surname, mail, password, 1);
-                } catch(UserAlreadyExistsException e){}
+                } catch (UserAlreadyExistsException e) {
+                }
                 clearConsole();
                 System.out.println("Cheers, mate, you've been registered");
             }
