@@ -15,7 +15,7 @@ public class App {
 
         
         ProductController productController = new ProductController();
-
+        
         Scanner scanner = new Scanner(System.in);
         clearConsole();
 
@@ -141,13 +141,19 @@ public class App {
                 clearConsole();
 
                 System.out.print("Enter new product's name: ");
-                String name = br.readLine();
+                String name = "";
+                while (name == "") {
+                    name = scanner.nextLine();
+                }
 
                 System.out.print("Enter new product's price: ");
                 double price = scanner.nextDouble();
 
                 System.out.print("Enter new product's description: ");
-                String description = br.readLine();
+                String description = "";
+                while (description == "") {
+                    description = scanner.nextLine();
+                }
 
                 Product product = new Product(name, description, price);
                 productController.addProduct(product);
