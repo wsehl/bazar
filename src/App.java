@@ -1,22 +1,23 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Scanner;
 
 import controllers.ProductController;
-import exceptions.*;
+import exceptions.ObjectNotFoundException;
 import models.Product;
 
 public class App {
 
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+    public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static void main(String[] args) throws Exception {
 
         ProductController productController = new ProductController();
-
-        Scanner scanner = new Scanner(System.in);
-        clearConsole();
 
         System.out.print("Login: ");
         String login = br.readLine();
@@ -24,43 +25,53 @@ public class App {
         System.out.print("Password: ");
         String password = br.readLine();
 
-        boolean isActive = (login.equals("0") && password.equals("0")) ? true : false;
-        clearConsole();
+        boolean isActive = login.equals("0") && password.equals("0");
 
         while (isActive) {
             int input = -1;
+
             System.out.println("Choose option:\n" +
                     "1 - Output product\n" +
                     "2 - Update product\n" +
                     "3 - Add product\n" +
                     "4 - Delete product\n" +
                     "5 - Close window");
-            input = scanner.nextInt();
 
-            if (input == 1) { // output product
+            input = Integer.parseInt(br.readLine());
+
+            // output product
+            if (input == 1) {
                 clearConsole();
+
                 System.out.println("Choose option:\n" +
                         "1 - Output all products\n" +
                         "2 - Output product by ID\n" +
                         "3 - Back");
-                switch (scanner.nextInt()) {
+
+                switch (Integer.parseInt(br.readLine())) {
                     default:
                         System.out.println("Wront input!\n");
                         break;
-                    case 1: { // output all products
+
+                    // output all products
+                    case 1: {
                         clearConsole();
+
                         List<Product> products = productController.getProducts();
                         if (products.size() < 1) {
                             System.out.println("Database is empty");
                             break;
                         }
+
                         products.forEach(System.out::println);
                         break;
                     }
-                    case 2: { // output product by id
+
+                    // output product by id
+                    case 2: {
                         clearConsole();
                         System.out.println("Enter product ID: ");
-                        int productId = scanner.nextInt();
+                        int productId = Integer.parseInt(br.readLine());
                         clearConsole();
                         try {
                             System.out.println(productController.getProductById(productId) + "\n");
@@ -69,11 +80,15 @@ public class App {
                         }
                         break;
                     }
+
                     case 3: {
                         clearConsole();
                     }
                 }
-            } else if (input == 2) { // update product
+            }
+
+            // update product
+            else if (input == 2) {
                 clearConsole();
                 Product updatedProduct;
                 String name;
@@ -82,25 +97,29 @@ public class App {
                 int productId;
 
                 System.out.print("Enter product ID: ");
-                productId = scanner.nextInt();
+                productId = Integer.parseInt(br.readLine());
                 clearConsole();
+
                 try {
                     updatedProduct = productController.getProductById(productId);
                 } catch (ObjectNotFoundException e) {
                     System.out.println(e.getMessage());
                     continue;
                 }
+
                 System.out.println("UPDATE PRODUCT: " + productId + "\nChoose option:\n" +
                         "1 - Update name\n" +
                         "2 - Update price\n" +
                         "3 - Update decription\n" +
                         "4 - Back");
 
-                switch (scanner.nextInt()) {
+                switch (Integer.parseInt(br.readLine())) {
                     default:
                         System.out.println("Wrong input!\n");
                         break;
-                    case 1: { // update name
+
+                    // update name
+                    case 1: {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new name: ");
                         name = br.readLine();
@@ -110,10 +129,12 @@ public class App {
                         System.out.println("Product " + productId + " name changed to \"" + name + "\"\n");
                         break;
                     }
-                    case 2: { // update price
+
+                    // update price
+                    case 2: {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new price: ");
-                        price = scanner.nextDouble();
+                        price = Double.parseDouble(br.readLine());
 
                         updatedProduct.setPrice(price);
                         productController.updateProduct(productId, updatedProduct);
@@ -121,7 +142,9 @@ public class App {
                         System.out.println("Product " + productId + " price changed to \"" + price + "\"\n");
                         break;
                     }
-                    case 3: { // update description
+
+                    // update description
+                    case 3: {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new description: ");
                         description = br.readLine();
@@ -137,22 +160,25 @@ public class App {
                         clearConsole();
                     }
                 }
-            } else if (input == 3) { // add product
+            }
+
+            // add product
+            else if (input == 3) {
                 clearConsole();
 
                 System.out.print("Enter new product's name: ");
                 String name = "";
                 while (name == "") {
-                    name = scanner.nextLine();
+                    name = br.readLine();
                 }
 
                 System.out.print("Enter new product's price: ");
-                double price = scanner.nextDouble();
+                double price = Double.parseDouble(br.readLine());
 
                 System.out.print("Enter new product's description: ");
                 String description = "";
                 while (description == "") {
-                    description = scanner.nextLine();
+                    description = br.readLine();
                 }
 
                 Product product = new Product(name, description, price);
@@ -160,10 +186,13 @@ public class App {
                 clearConsole();
                 System.out.println(
                         "Product \"" + name + "\"  has been added to database with id: " + productId + ".\n");
-            } else if (input == 4) { // delete product
+            }
+
+            // delete product
+            else if (input == 4) {
                 clearConsole();
                 System.out.print("Enter product id: ");
-                int productId = scanner.nextInt();
+                int productId = Integer.parseInt(br.readLine());
                 clearConsole();
 
                 System.out.print("DELETE PRODUCT: " + productId + "\nAre you sure? (y/n): ");
@@ -173,6 +202,7 @@ public class App {
                     default:
                         System.out.println("Wrong input!\n");
                         break;
+
                     case "y": {
                         try {
                             productController.deleteProduct(productId);
@@ -184,26 +214,30 @@ public class App {
                         clearConsole();
                         System.out.println("Product " + productId + " has been deleted successfully\n");
                     }
+
                     case "n": {
                         clearConsole();
                         break;
                     }
                 }
-            } else if (input == 5) { // terminate loop
+            }
+
+            // exit program
+            else if (input == 5) {
                 clearConsole();
                 isActive = false;
                 System.out.println("Marketplace CLI closed\n");
-            } else {
+            }
+
+            // wrong input
+            else {
                 clearConsole();
                 System.out.println("Wrong input!\n");
             }
         }
-        scanner.close();
+
+        br.close();
 
     }
 
-    public static void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
 }
