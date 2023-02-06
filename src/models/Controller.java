@@ -8,14 +8,7 @@ public class Controller {
     private Connection connection;
 
     public Controller() throws Exception {
-        setConnection(new DBConnector());
-    }
-
-    public Controller(DBConnector dbConnector) {
-        setConnection(dbConnector);
-    }
-
-    private void setConnection(DBConnector dbConnector) {
+        DBConnector dbConnector = new DBConnector();
         this.connection = dbConnector.getConnection();
     }
 

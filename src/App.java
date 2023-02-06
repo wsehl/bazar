@@ -2,9 +2,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import controllers.AuthController;
 import controllers.ProductController;
 import exceptions.ObjectNotFoundException;
 import models.Product;
+import models.User;
 
 public class App {
 
@@ -18,14 +20,28 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         ProductController productController = new ProductController();
+        AuthController authController = new AuthController();
 
-        System.out.print("Login: ");
-        String login = br.readLine();
+        System.out.print("Email: ");
+        String email = br.readLine();
 
         System.out.print("Password: ");
         String password = br.readLine();
 
-        boolean isActive = login.equals("0") && password.equals("0");
+        // User user = authController.register("Valeriy", "B", "admin@example.com",
+        // "123", 1);
+
+        User user = authController.login(email, password);
+
+        boolean isActive = false;
+
+        if (user == null) {
+            System.out.println("Wrong email or password!");
+            return;
+        } else {
+            System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!");
+            isActive = true;
+        }
 
         while (isActive) {
             int input = -1;

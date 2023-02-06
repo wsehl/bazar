@@ -5,14 +5,12 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private byte[] password;
 
-    public User(int id, String firstName, String lastName, String email, byte[] password) {
+    public User(int id, String firstName, String lastName, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
     }
 
     public int getId() {
@@ -31,7 +29,4 @@ public class User {
         return email;
     }
 
-    public byte[] getPassword() {
-        return password;
-    }
 }
