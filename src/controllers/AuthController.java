@@ -15,12 +15,11 @@ public class AuthController extends Controller {
     public AuthController() throws Exception {
     }
 
-    private final byte[] salt = "salt".getBytes();
+    private final byte[] SALT = "salt".getBytes();
 
     public User register(String firstName, String lastName, String email, String password, int roleId) {
         try {
-            byte[] hashedPassword = PBKDF2.getEncryptedPassword(password, salt);
-            String hashedPasswordString = PBKDF2.bytesToHex(hashedPassword);
+            String hashedPassword = PBKDF2.bytesToHex(PBKDF2.getEncryptedPassword(password, SALT));
 
             String insertUserSQL = "INSERT INTO users (first_name, last_name, email, password, role_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = getConnection().prepareStatement(insertUserSQL,
@@ -28,7 +27,7 @@ public class AuthController extends Controller {
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, email);
-            preparedStatement.setString(4, hashedPasswordString);
+            preparedStatement.setString(4, hashedPassword);
             preparedStatement.setInt(5, roleId);
             preparedStatement.executeUpdate();
 
@@ -47,13 +46,12 @@ public class AuthController extends Controller {
 
     public User login(String email, String password) {
         try {
-            byte[] hashedPassword = PBKDF2.getEncryptedPassword(password, salt);
-            String hashedPasswordString = PBKDF2.bytesToHex(hashedPassword);
+            String hashedPassword = PBKDF2.bytesToHex(PBKDF2.getEncryptedPassword(password, SALT));
 
             String getUserSQL = "SELECT * FROM users WHERE email = ? AND password = ?";
             PreparedStatement preparedStatement = getConnection().prepareStatement(getUserSQL);
             preparedStatement.setString(1, email);
-            preparedStatement.setString(2, hashedPasswordString);
+            preparedStatement.setString(2, hashedPassword);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
