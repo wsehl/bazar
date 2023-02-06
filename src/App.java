@@ -5,6 +5,7 @@ import java.util.List;
 import controllers.AuthController;
 import controllers.ProductController;
 import exceptions.ObjectNotFoundException;
+import exceptions.UserAlreadyExistsException;
 import models.Product;
 import models.User;
 
@@ -21,27 +22,58 @@ public class App {
 
         ProductController productController = new ProductController();
         AuthController authController = new AuthController();
-
-        System.out.print("Email: ");
-        String email = br.readLine();
-
-        System.out.print("Password: ");
-        String password = br.readLine();
-
-        // User user = authController.register("Valeriy", "B", "admin@example.com",
-        // "123", 1);
-
-        User user = authController.login(email, password);
-
         boolean isActive = false;
 
-        if (user == null) {
-            System.out.println("Wrong email or password!");
-            return;
-        } else {
-            clearConsole();
-            System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!");
-            isActive = true;
+        while (isActive == false) {
+
+            int input = -1;
+
+            System.out.println("Choose option:\n" +
+                    "1 - Sign In\n" +
+                    "2 - Sign Up\n");
+
+            input = Integer.parseInt(br.readLine());
+
+            if (input == 1) {
+                System.out.print("Email: ");
+                String email = br.readLine();
+
+                System.out.print("Password: ");
+                String password = br.readLine();
+
+                // User user = authController.register("Valeriy", "B", "admin@example.com",
+                // "123", 1);
+
+                User user = authController.login(email, password);
+
+                if (user == null) {
+                    System.out.println("Wrong email or password!");
+                    return;
+                } else {
+                    clearConsole();
+                    System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!");
+                    isActive = true;
+                }
+            } else if (input == 2) {
+                System.out.print("First name: ");
+                String name = br.readLine();
+
+                System.out.print("Second name: ");
+                String surname = br.readLine();
+
+                System.out.print("Email: ");
+                String mail = br.readLine();
+
+                System.out.print("Password: ");
+                String password = br.readLine();
+
+                try{
+                    User user = authController.register(name, surname, mail, password, 1);
+                } catch(UserAlreadyExistsException e){}
+                clearConsole();
+                System.out.println("Cheers, mate, you've been registered");
+            }
+            continue;
         }
 
         while (isActive) {
