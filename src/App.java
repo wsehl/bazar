@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import controllers.AuthController;
 import controllers.ProductController;
@@ -12,6 +14,13 @@ import models.User;
 public class App {
 
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
+        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+            Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+            return matcher.find();
+    }
 
     public static void clearConsole() {
         System.out.print("\033[H\033[2J");
@@ -22,6 +31,7 @@ public class App {
 
         ProductController productController = new ProductController();
         AuthController authController = new AuthController();
+        User user = null;
         boolean isActive = false;
         clearConsole();
         while (isActive == false) {
@@ -29,88 +39,94 @@ public class App {
 
             System.out.println("Choose option:\n" +
                     "1 - Sign In\n" +
-                    "2 - Sign Up\n");
+                    "2 - Sign Up");
 
             input = Integer.parseInt(br.readLine());
 
             if (input == 1) {
-                System.out.print("Email: ");
+                clearConsole();
+                System.out.print("SIGN IN\nEmail: ");
                 String email = br.readLine();
+                while (!validate(email)) {
+                    clearConsole();
+                    System.out.print("SIGN IN\nWrong Email format!\nEmail: ");
+                    email = br.readLine();
+                }
+                clearConsole();
 
-                System.out.print("Password: ");
+                System.out.print("SIGN IN\nEmail: " + email + 
+                    "\nPassword: ");
                 String password = br.readLine();
 
-                // User user = authController.register("Valeriy", "B", "admin@example.com",
-                // "123", 1);
-
-                User user = authController.login(email, password);
-
+                user = authController.login(email, password);
+                clearConsole();
                 if (user == null) {
                     System.out.println("Wrong email or password!");
-                    return;
+                    continue;
                 } else {
-                    clearConsole();
                     System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!");
                     isActive = true;
                 }
             } else if (input == 2) {
-
-                String name = "";
+                clearConsole();
+                System.out.print("REGISTER\nFirst name: ");
+                String name = br.readLine();
                 while (name.length() < 2) {
-                    System.out.print("First name: ");
+                    System.out.print("First name should be longer than 1!\nFirst name: ");
                     name = br.readLine();
-                    if (name.length() < 2) {
-                        clearConsole();
-                        System.out.println("First name must contain at least 2 symbols");
-                    }
-                }
-
-                String surname = "";
-                while (surname.length() < 2) {
-                    System.out.print("Second name: ");
-                    surname = br.readLine();
-                    if (surname.length() < 2) {
-                        clearConsole();
-                        System.out.println("Second name must contain at least 2 symbols");
-                    }
-                }
-
-                String mail = "";
-                while (mail.length() < 4) {
-                    System.out.print("Email: ");
-                    mail = br.readLine();
-                    if (!mail.contains("@")) {
-                        clearConsole();
-                        System.out.println("Wrong email format");
-                        mail="";
-                    }
-                }
-
-
-                String password = "";
-                while (password.length() < 8) {
-                    System.out.print("Password: ");
-                    password = br.readLine();
-                    if (password.length()<8){
-                        clearConsole();
-                        System.out.println("Password must contain at least 8 symbols");
-                    }
-                }
-
-                try {
-                    User user = authController.register(name, surname, mail, password, 1);
-                } catch (UserAlreadyExistsException e) {
                 }
                 clearConsole();
-                System.out.println("Cheers, mate, you've been registered");
+                
+                System.out.print("REGISTER\nFirst name: " + name + 
+                    "\nSecond name: ");
+                String surname = br.readLine();
+                while (surname.length() < 2) {
+                    System.out.print("Second name should be longer than 1!\nFirst name: ");
+                    name = br.readLine();
+                }
+                clearConsole();
+
+                System.out.print("REGISTER\nFirst name: " + name + 
+                    "\nSecond name: " + surname +
+                    "\nEmail: ");
+                String email = br.readLine();
+                while (!validate(email)) {
+                    clearConsole();
+                    System.out.print("Wrong email format!\nEmail: ");
+                    email = br.readLine();
+                }
+                clearConsole();
+
+                System.out.print("REGISTER\nFirst name: " + name + 
+                    "\nSecond name: " + surname +
+                    "\nEmail: " + email +
+                    "\nPassword: ");
+                String password = br.readLine();
+                while (password.length() < 8) {
+                    clearConsole();
+                    System.out.print("Password should be longer than 7!\nPassword: ");
+                    password = br.readLine();
+                }
+                clearConsole();
+
+                try {
+                    user = authController.register(name, surname, email, password, 1);
+                } catch (UserAlreadyExistsException e) {
+                    System.out.println(e.getMessage());
+                    continue;
+                }
+                clearConsole();
+                System.out.println("Cheers, mate, you've been registered\n" +
+                    "ACCOUNT: " + email);
+                isActive = true;
             }
-            continue;
         }
 
         while (isActive) {
             int input = -1;
 
-            System.out.println("Choose option:\n" +
+            System.out.println("\nACCOUNT: " + user.getEmail() + 
+                    "\nChoose option:\n" +
                     "1 - Output product\n" +
                     "2 - Update product\n" +
                     "3 - Add product\n" +
