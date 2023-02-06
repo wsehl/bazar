@@ -67,11 +67,13 @@ public class ProductController extends Controller {
                 String productDescription = resultSet.getString("product_description");
                 double productPrice = resultSet.getDouble("product_price");
                 return new Product(productId, productName, productDescription, productPrice);
+            } else {
+                throw new ObjectNotFoundException("Product " + id + " wasn't found");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new ObjectNotFoundException("Product " + id + " wasn't found");
+        return null;
     }
 
     public void updateProduct(int id, Product updatedProduct) {
@@ -89,8 +91,10 @@ public class ProductController extends Controller {
     }
 
     public void deleteProduct(int id) throws ObjectNotFoundException {
-        try { // make deleteProduct(Product product), not (int id)
-            Product product = getProductById(id);
+        try {
+            // check if product exists
+            getProductById(id);
+
             PreparedStatement statement = getConnection().prepareStatement("DELETE FROM products WHERE product_id = ?");
             statement.setInt(1, id);
             statement.executeUpdate();
