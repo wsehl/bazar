@@ -15,23 +15,50 @@ import models.User;
 public class App {
 
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    public static final Pattern PASSWORD_HARDNESS_REGEX = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\S]{8,10}$");
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+            Pattern.CASE_INSENSITIVE);
+
+    public static final Pattern PASSWORD_STRENGTH_REGEX = Pattern
+            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\S]{8,10}$");
 
     public static boolean validateEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
-    public static boolean isPasswordHard(String password) {
-        Matcher matcher = PASSWORD_HARDNESS_REGEX.matcher(password);
+    public static boolean validatePassword(String password) {
+        if (password.length() < 8) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean getPasswordStrength(String password) {
+        Matcher matcher = PASSWORD_STRENGTH_REGEX.matcher(password);
         return matcher.find();
     }
 
     public static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static String getStrengthBar(int percent) {
+        char barCompleteChar = '\u2588';
+        char barIncompleteChar = '\u2591';
+
+        String bar = "";
+
+        for (int i = 0; i < 10; i++) {
+            if (i < percent / 10) {
+                bar += barCompleteChar;
+            } else {
+                bar += barIncompleteChar;
+            }
+        }
+
+        return bar;
     }
 
     public static void main(String[] args) throws Exception {
@@ -43,16 +70,16 @@ public class App {
         boolean isActive = false;
         clearConsole();
         System.out.println("████████████████████████████████\n" +
-                           "████████████████████████████████\n" +
-                           "██░░░░██████░░░░████░░░░░░░░░░██\n" + 
-                           "██░░░░░░██░░██████████░░████░░██\n" +
-                           "██░░░░██░░██░░░░████░░░░░░░░░░██\n" +
-                           "██░░░░██████░░░░████░░░░████████\n" +
-                           "██░░░░██████░░░░████░░░░████████\n" +
-                           "████████████████████████████████\n" +
-                           "████████████████████████████████");
+                "████████████████████████████████\n" +
+                "██░░░░██████░░░░████░░░░░░░░░░██\n" +
+                "██░░░░░░██░░██████████░░████░░██\n" +
+                "██░░░░██░░██░░░░████░░░░░░░░░░██\n" +
+                "██░░░░██████░░░░████░░░░████████\n" +
+                "██░░░░██████░░░░████░░░░████████\n" +
+                "████████████████████████████████\n" +
+                "████████████████████████████████");
         System.out.println("________________________________");
-        System.out.println("\nWelcome to MarketPlace!©");
+        System.out.println("\nWelcome to Marketplace!©");
         System.out.println("________________________________\n");
         while (isActive == false) {
             int input = -1;
@@ -73,8 +100,8 @@ public class App {
                 }
                 clearConsole();
 
-                System.out.print("SIGN IN\nEmail: " + email + 
-                    "\nPassword: ");
+                System.out.print("SIGN IN\nEmail: " + email +
+                        "\nPassword: ");
                 String password = br.readLine();
 
                 user = authController.login(email, password);
@@ -95,9 +122,9 @@ public class App {
                     name = br.readLine();
                 }
                 clearConsole();
-                
-                System.out.print("REGISTER\nFirst name: " + name + 
-                    "\nSecond name: ");
+
+                System.out.print("REGISTER\nFirst name: " + name +
+                        "\nSecond name: ");
                 String surname = br.readLine();
                 while (surname.length() < 2) {
                     System.out.print("Second name should be longer than 1!\nFirst name: ");
@@ -105,9 +132,9 @@ public class App {
                 }
                 clearConsole();
 
-                System.out.print("REGISTER\nFirst name: " + name + 
-                    "\nSecond name: " + surname +
-                    "\nEmail: ");
+                System.out.print("REGISTER\nFirst name: " + name +
+                        "\nSecond name: " + surname +
+                        "\nEmail: ");
                 String email = br.readLine();
                 while (!validateEmail(email)) {
                     clearConsole();
@@ -116,29 +143,33 @@ public class App {
                 }
                 clearConsole();
 
-                System.out.print("REGISTER\nFirst name: " + name + 
-                    "\nSecond name: " + surname +
-                    "\nEmail: " + email +
-                    "\nPassword: ");
+                System.out.print("REGISTER\nFirst name: " + name +
+                        "\nSecond name: " + surname +
+                        "\nEmail: " + email +
+                        "\nPassword: ");
                 String password = br.readLine();
-                while (password.length() < 8) {
-                    System.out.print("Password: ");
+
+                boolean isValid = validatePassword(password);
+
+                while (isValid) {
+                    System.out.print("Password (8 characters min): ");
                     password = br.readLine();
-                    if (password.length()<8){
+                    if (password.length() < 8) {
                         clearConsole();
                         System.out.println("Password must contain at least 8 symbols");
                     }
                 }
                 clearConsole();
-                System.out.println("REGISTER\nFirst name: " + name + 
-                    "\nSecond name: " + surname +
-                    "\nEmail: " + email +
-                    "\nPassword: " + password +
-                    "\nYour Password is: " + (isPasswordHard(password) ? "|/////////| Hard" : "|///______| Easy") + 
-                    "\n\n1 - Confirm" +
-                    "\n2 - Cancel");
-                
-                switch(scanner.nextInt()) {
+                System.out.println("REGISTER\nFirst name: " + name +
+                        "\nSecond name: " + surname +
+                        "\nEmail: " + email +
+                        "\nPassword: " + password +
+                        "\nYour password's strength is: "
+                        + (getPasswordStrength(password) ? getStrengthBar(100) : getStrengthBar(20)) +
+                        "\n\n1 - Confirm" +
+                        "\n2 - Cancel");
+
+                switch (scanner.nextInt()) {
                     default: {
                         clearConsole();
                         System.out.println("Registration has been canceled");
@@ -160,11 +191,11 @@ public class App {
                 isActive = true;
             }
         }
-        
+
         while (isActive) {
             int input = -1;
 
-            System.out.println("ACCOUNT: " + user.getEmail() + 
+            System.out.println("ACCOUNT: " + user.getEmail() +
                     "\nChoose option:\n" +
                     "1 - Output product\n" +
                     "2 - Update product\n" +
@@ -261,7 +292,8 @@ public class App {
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new name: ");
                         name = br.readLine();
                         while (name.length() < 2) {
-                            System.out.print("UPDATE PRODUCT: " + productId + "\nName should be longer than 1!\nEnter new name: ");
+                            System.out.print("UPDATE PRODUCT: " + productId
+                                    + "\nName should be longer than 1!\nEnter new name: ");
                             name = br.readLine();
                         }
 
@@ -290,7 +322,8 @@ public class App {
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new description: ");
                         description = br.readLine();
                         while (description.length() < 5) {
-                            System.out.print("UPDATE PRODUCT: " + productId + "\nDescription should be longer than 5!\nEnter new description: ");
+                            System.out.print("UPDATE PRODUCT: " + productId
+                                    + "\nDescription should be longer than 5!\nEnter new description: ");
                             description = br.readLine();
                         }
 
@@ -316,15 +349,15 @@ public class App {
                 while (name.length() < 2) {
                     System.out.print("Name should be longer than 1!\nName: ");
                     name = br.readLine();
-                }    
+                }
                 clearConsole();
 
-                System.out.print("ADD NEW PRODUCT\nName: " + name + 
+                System.out.print("ADD NEW PRODUCT\nName: " + name +
                         "\nPrice: ");
                 double price = scanner.nextDouble();
                 clearConsole();
 
-                System.out.print("ADD NEW PRODUCT\nName: " + name + 
+                System.out.print("ADD NEW PRODUCT\nName: " + name +
                         "\nPrice: " + price +
                         "\nDescription: ");
                 String description = br.readLine();
