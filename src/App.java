@@ -18,7 +18,7 @@ public class App {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
         Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    public static boolean validate(String emailStr) {
+    public static boolean validateEmail(String emailStr) {
             Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
             return matcher.find();
     }
@@ -36,19 +36,19 @@ public class App {
         User user = null;
         boolean isActive = false;
         clearConsole();
+        System.out.println("________________________________\n");
+        System.out.println("████████████████████████████████\n" +
+                           "██░░░░██████░░░░████░░░░░░░░░░██\n"+ 
+                           "██░░░░░░██░░██████████░░████░░██\n"+
+                           "██░░░░██░░██░░░░████░░░░░░░░░░██\n"+
+                           "██░░░░██████░░░░████░░░░░░░░░░██\n"+
+                           "██░░░░██████░░░░████░░░░████████\n"+
+                           "████████████████████████████████\n");
+        System.out.println("________________________________");
+        System.out.println("\nWelcome to MarketPlace!(c)");
+        System.out.println("________________________________\n");
         while (isActive == false) {
             int input = -1;
-            System.out.println("________________________________\n");
-            System.out.println("████████████████████████████████\n" +
-                               "██░░░░██████░░░░████░░░░░░░░░░██\n"+ 
-                               "██░░░░░░██░░██████████░░████░░██\n"+
-                               "██░░░░██░░██░░░░████░░░░░░░░░░██\n"+
-                               "██░░░░██████░░░░████░░░░░░░░░░██\n"+
-                               "██░░░░██████░░░░████░░░░████████\n"+
-                               "████████████████████████████████\n");
-            System.out.println("________________________________");
-            System.out.println("\nWelcome to MarketPlace!(c)");
-            System.out.println("________________________________\n");
             System.out.println("Choose option:\n" +
                     "1 - Sign In\n" +
                     "2 - Sign Up");
@@ -59,7 +59,7 @@ public class App {
                 clearConsole();
                 System.out.print("SIGN IN\nEmail: ");
                 String email = br.readLine();
-                while (!validate(email)) {
+                while (!validateEmail(email)) {
                     clearConsole();
                     System.out.print("SIGN IN\nWrong Email format!\nEmail: ");
                     email = br.readLine();
@@ -102,7 +102,7 @@ public class App {
                     "\nSecond name: " + surname +
                     "\nEmail: ");
                 String email = br.readLine();
-                while (!validate(email)) {
+                while (!validateEmail(email)) {
                     clearConsole();
                     System.out.print("Wrong email format!\nEmail: ");
                     email = br.readLine();
