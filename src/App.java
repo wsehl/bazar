@@ -128,8 +128,8 @@ public class App {
                         "\nSecond name: ");
                 String surname = br.readLine();
                 while (surname.length() < 2) {
-                    System.out.print("Second name should be longer than 1!\nFirst name: ");
-                    name = br.readLine();
+                    System.out.print("Second name should be longer than 1!\nSecond name: ");
+                    surname = br.readLine();
                 }
                 clearConsole();
 
