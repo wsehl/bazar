@@ -29,9 +29,10 @@ public class App {
 
     public static boolean validatePassword(String password) {
         if (password.length() < 8) {
-            return true;
+            return false;
         }
-        return false;
+
+        return true;
     }
 
     public static boolean getPasswordStrength(String password) {
@@ -146,18 +147,15 @@ public class App {
                 System.out.print("REGISTER\nFirst name: " + name +
                         "\nSecond name: " + surname +
                         "\nEmail: " + email +
-                        "\nPassword: ");
+                        "\nPassword (8 characters min): ");
                 String password = br.readLine();
 
-                boolean isValid = validatePassword(password);
+                while (!validatePassword(password)) {
+                    clearConsole();
+                    System.out.println("Password must contain at least 8 symbols \n");
+                    System.out.print("Password: ");
 
-                while (isValid) {
-                    System.out.print("Password (8 characters min): ");
                     password = br.readLine();
-                    if (password.length() < 8) {
-                        clearConsole();
-                        System.out.println("Password must contain at least 8 symbols");
-                    }
                 }
                 clearConsole();
                 System.out.println("REGISTER\nFirst name: " + name +
