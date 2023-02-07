@@ -15,12 +15,18 @@ import models.User;
 public class App {
 
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
-        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static final Pattern PASSWORD_HARDNESS_REGEX = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\S]{8,10}$");
 
     public static boolean validateEmail(String emailStr) {
-            Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-            return matcher.find();
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
+    public static boolean isPasswordHard(String password) {
+        Matcher matcher = PASSWORD_HARDNESS_REGEX.matcher(password);
+        return matcher.find();
     }
 
     public static void clearConsole() {
@@ -36,16 +42,17 @@ public class App {
         User user = null;
         boolean isActive = false;
         clearConsole();
-        System.out.println("________________________________\n");
         System.out.println("████████████████████████████████\n" +
-                           "██░░░░██████░░░░████░░░░░░░░░░██\n"+ 
-                           "██░░░░░░██░░██████████░░████░░██\n"+
-                           "██░░░░██░░██░░░░████░░░░░░░░░░██\n"+
-                           "██░░░░██████░░░░████░░░░░░░░░░██\n"+
-                           "██░░░░██████░░░░████░░░░████████\n"+
-                           "████████████████████████████████\n");
+                           "████████████████████████████████\n" +
+                           "██░░░░██████░░░░████░░░░░░░░░░██\n" + 
+                           "██░░░░░░██░░██████████░░████░░██\n" +
+                           "██░░░░██░░██░░░░████░░░░░░░░░░██\n" +
+                           "██░░░░██████░░░░████░░░░████████\n" +
+                           "██░░░░██████░░░░████░░░░████████\n" +
+                           "████████████████████████████████\n" +
+                           "████████████████████████████████");
         System.out.println("________________________________");
-        System.out.println("\nWelcome to MarketPlace!(c)");
+        System.out.println("\nWelcome to MarketPlace!©");
         System.out.println("________________________________\n");
         while (isActive == false) {
             int input = -1;
@@ -114,7 +121,6 @@ public class App {
                     "\nEmail: " + email +
                     "\nPassword: ");
                 String password = br.readLine();
-                int hard=0;
                 while (password.length() < 8) {
                     System.out.print("Password: ");
                     password = br.readLine();
@@ -122,58 +128,24 @@ public class App {
                         clearConsole();
                         System.out.println("Password must contain at least 8 symbols");
                     }
-                    if (password.length()>=8){
-                        char c;
-                        String hardness="";
-                        boolean upperSymbol = false;
-                        boolean lowerSymbol = false;
-                        boolean digitSymbol = false;
-                        for (int i=0; i<password.length(); i++){
-                            c= password.charAt(i);
-                            if (Character.isDigit(c)){
-                                digitSymbol = true;
-                            }
-                            if (Character.isUpperCase(c)){
-                                upperSymbol = true;
-                            }
-                            if (Character.isLowerCase(c)){
-                                lowerSymbol = true;
-                            }
-                        }
-                        if(digitSymbol){
-                            hard+=1;
-                        }
-                        if(upperSymbol){
-                            hard+=1;
-                        }
-                        if(lowerSymbol){
-                            hard+=1;
-                        }
-                        switch(hard){
-                            case 1:
-                                hardness="|///______| Easy";
-                            case 2:
-                                hardness="|//////___| Medium";
-                            case 3:
-                                hardness="|/////////| Hard";
-
-                        }
+                }
+                clearConsole();
+                System.out.println("REGISTER\nFirst name: " + name + 
+                    "\nSecond name: " + surname +
+                    "\nEmail: " + email +
+                    "\nPassword: " + password +
+                    "\nYour Password is: " + (isPasswordHard(password) ? "|/////////| Hard" : "|///______| Easy") + 
+                    "\n\n1 - Confirm" +
+                    "\n2 - Cancel");
+                
+                switch(scanner.nextInt()) {
+                    default: {
                         clearConsole();
-                        System.out.println("Your password is\n" + hardness);
-                        System.out.println("Are you sure?\n" +
-                                "1 - Yes!\n" +
-                                "2 - No..\n");
-                        input = Integer.parseInt(br.readLine());
-                        if (input == 1){
-                            break;
-                        }
-                        else{
-                            clearConsole();
-                            hard=0;
-                            hardness="";
-                            password="";
-                        }
-
+                        System.out.println("Registration has been canceled");
+                        continue;
+                    }
+                    case 1: {
+                        break;
                     }
                 }
 
