@@ -294,6 +294,7 @@ public class App {
                                     + "\nName should be longer than 1!\nEnter new name: ");
                             name = br.readLine();
                         }
+                        clearConsole();
 
                         updatedProduct.setName(name);
                         productController.updateProduct(productId, updatedProduct);
@@ -306,6 +307,7 @@ public class App {
                         clearConsole();
                         System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new price: ");
                         price = scanner.nextDouble();
+                        clearConsole();
 
                         updatedProduct.setPrice(price);
                         productController.updateProduct(productId, updatedProduct);
@@ -324,6 +326,7 @@ public class App {
                                     + "\nDescription should be longer than 5!\nEnter new description: ");
                             description = br.readLine();
                         }
+                        clearConsole();
 
                         updatedProduct.setDescription(description);
                         productController.updateProduct(productId, updatedProduct);
