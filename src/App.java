@@ -287,7 +287,9 @@ public class App {
                     // update name
                     case 1: {
                         clearConsole();
-                        System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new name: ");
+                        System.out.print("UPDATE PRODUCT: " + productId + 
+                            "\nCurrent name: " + updatedProduct.getName() + 
+                            "\nEnter new name: ");
                         name = br.readLine();
                         while (name.length() < 2) {
                             System.out.print("UPDATE PRODUCT: " + productId
@@ -305,7 +307,9 @@ public class App {
                     // update price
                     case 2: {
                         clearConsole();
-                        System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new price: ");
+                        System.out.print("UPDATE PRODUCT: " + productId + 
+                            "\nCurrent price: " + updatedProduct.getPrice() + 
+                            "\nEnter new price: ");
                         price = scanner.nextDouble();
                         clearConsole();
 
@@ -319,7 +323,9 @@ public class App {
                     // update description
                     case 3: {
                         clearConsole();
-                        System.out.print("UPDATE PRODUCT: " + productId + "\nEnter new description: ");
+                        System.out.print("UPDATE PRODUCT: " + productId + 
+                            "\nCurrent description: " + updatedProduct.getDescription() + 
+                            "\nEnter new description: ");
                         description = br.readLine();
                         while (description.length() < 5) {
                             System.out.print("UPDATE PRODUCT: " + productId
