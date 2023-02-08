@@ -80,7 +80,7 @@ public class App {
                 "████████████████████████████████\n" +
                 "████████████████████████████████");
         System.out.println("________________________________");
-        System.out.println("\nWelcome to Marketplace!©");
+        System.out.println("\nWelcome to bazar!©");
         System.out.println("________________________________\n");
         while (isActive == false) {
             int input = -1;
@@ -287,9 +287,9 @@ public class App {
                     // update name
                     case 1: {
                         clearConsole();
-                        System.out.print("UPDATE PRODUCT: " + productId + 
-                            "\nCurrent name: " + updatedProduct.getName() + 
-                            "\nEnter new name: ");
+                        System.out.print("UPDATE PRODUCT: " + productId +
+                                "\nCurrent name: " + updatedProduct.getName() +
+                                "\nEnter new name: ");
                         name = br.readLine();
                         while (name.length() < 2) {
                             System.out.print("UPDATE PRODUCT: " + productId
@@ -307,9 +307,9 @@ public class App {
                     // update price
                     case 2: {
                         clearConsole();
-                        System.out.print("UPDATE PRODUCT: " + productId + 
-                            "\nCurrent price: " + updatedProduct.getPrice() + 
-                            "\nEnter new price: ");
+                        System.out.print("UPDATE PRODUCT: " + productId +
+                                "\nCurrent price: " + updatedProduct.getPrice() +
+                                "\nEnter new price: ");
                         price = scanner.nextDouble();
                         clearConsole();
 
@@ -323,9 +323,9 @@ public class App {
                     // update description
                     case 3: {
                         clearConsole();
-                        System.out.print("UPDATE PRODUCT: " + productId + 
-                            "\nCurrent description: " + updatedProduct.getDescription() + 
-                            "\nEnter new description: ");
+                        System.out.print("UPDATE PRODUCT: " + productId +
+                                "\nCurrent description: " + updatedProduct.getDescription() +
+                                "\nEnter new description: ");
                         description = br.readLine();
                         while (description.length() < 5) {
                             System.out.print("UPDATE PRODUCT: " + productId
@@ -415,7 +415,7 @@ public class App {
             else if (input == 5) {
                 clearConsole();
                 isActive = false;
-                System.out.println("Marketplace CLI closed\n");
+                System.out.println("bazar CLI closed\n");
             }
 
             // wrong input
