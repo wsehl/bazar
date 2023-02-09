@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.IUserController;
 import exceptions.ObjectNotFoundException;
 import models.User;
 import models.Controller;
 
-public class UserController extends Controller {
+public class UserController extends Controller implements IUserController {
 
     public UserController() throws Exception {
     }
