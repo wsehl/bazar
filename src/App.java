@@ -69,6 +69,7 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         User user = null;
         boolean isActive = false;
+        int roleId = 0;
         clearConsole();
         System.out.println("████████████████████████████████\n" +
                 "████████████████████████████████\n" +
@@ -113,6 +114,7 @@ public class App {
                 } else {
                     System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!\n");
                     isActive = true;
+                    roleId = user.getRoleId();
                 }
             } else if (input == 2) {
                 clearConsole();
@@ -179,7 +181,7 @@ public class App {
                 }
 
                 try {
-                    user = authController.register(name, surname, email, password, 1);
+                    user = authController.register(name, surname, email, password, 2);
                 } catch (UserAlreadyExistsException e) {
                     System.out.println(e.getMessage());
                     continue;
@@ -256,6 +258,10 @@ public class App {
             // update product
             else if (input == 2) {
                 clearConsole();
+                if (!(roleId == 1)) {
+                    System.out.println("Access denied!\n");
+                    continue;
+                }
                 Product updatedProduct;
                 String name;
                 double price;
@@ -350,6 +356,10 @@ public class App {
             // add product
             else if (input == 3) {
                 clearConsole();
+                if (!(roleId == 1)) {
+                    System.out.println("Access denied!\n");
+                    continue;
+                }
 
                 System.out.print("ADD NEW PRODUCT\nName: ");
                 String name = br.readLine();
@@ -380,6 +390,11 @@ public class App {
             // delete product
             else if (input == 4) {
                 clearConsole();
+                if (!(roleId == 1)) {
+                    System.out.println("Access denied!\n");
+                    continue;
+                }
+
                 System.out.print("Enter product id: ");
                 int productId = scanner.nextInt();
                 clearConsole();
