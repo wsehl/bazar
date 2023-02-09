@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.IProductController;
 import exceptions.ObjectNotFoundException;
 import models.Product;
 import models.Controller;
 
-public class ProductController extends Controller {
+public class ProductController extends Controller implements IProductController {
 
     public ProductController() throws Exception {
     }
