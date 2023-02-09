@@ -35,4 +35,14 @@ public class User {
         return roleId;
     }
 
+    @Override
+    public String toString() {
+        return "User {" +
+                "id = " + id +
+                ", first_name = '" + firstName + '\'' +
+                ", second_name = '" + lastName + '\'' +
+                ", email = '" + email + '\'' +
+                ", role = '" + ((roleId == 1) ? "Admin" : "User") + "'}";
+    }
+
 }
