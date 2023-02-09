@@ -6,12 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import interfaces.IAuthController;
 import exceptions.UserAlreadyExistsException;
 import models.User;
 import models.Controller;
 import utils.PBKDF2;
 
-public class AuthController extends Controller {
+public class AuthController extends Controller implements IAuthController {
 
     public AuthController() throws Exception {
     }
