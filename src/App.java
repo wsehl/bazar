@@ -213,7 +213,8 @@ public class App {
                         "1 - Output all products\n" +
                         "2 - Output product by ID\n" +
                         "3 - Output products by name\n" +
-                        "4 - Back");
+                        "4 - Output products by price\n" +
+                        "5 - Back");
 
                 switch (Integer.parseInt(br.readLine())) {
                     default:
@@ -271,6 +272,29 @@ public class App {
                     }
 
                     case 4: {
+                        clearConsole();
+                        System.out.print("Enter start price: ");
+                        double start = scanner.nextDouble();
+                        System.out.print(start + "\nEnter end price: ");
+                        double end = scanner.nextDouble();
+                        while (end < start) {
+                            clearConsole();
+                            System.out.print("End price can't be less than start price\nEnter end price: ");
+                            end = scanner.nextDouble();
+                        }
+
+                        List<Product> products = productController.getProductsByPrice(start, end);
+                        if (products.size() < 1) {
+                            System.out.println("Products with price between \"" + start + "\" and \"" + end + " wasn't found\n");
+                            break;
+                        }
+                        clearConsole();
+                        products.forEach(System.out::println);
+                        System.out.print("\n");
+                        break;
+                    }
+
+                    case 5: {
                         clearConsole();
                     }
                 }

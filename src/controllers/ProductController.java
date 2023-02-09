@@ -96,6 +96,27 @@ public class ProductController extends Controller {
         return products;
     }
 
+    public List<Product> getProductsByPrice(double start, double end) {
+        List<Product> products = new ArrayList<>();
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM products WHERE product_price >= ? and product_price <= ?");
+            statement.setDouble(1, start);
+            statement.setDouble(2, end);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("product_id");
+                String productName = resultSet.getString("product_name");
+                String productDescription = resultSet.getString("product_description");
+                double productPrice = resultSet.getDouble("product_price");
+                products.add(new Product(productId, productName, productDescription, productPrice));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
     public void updateProduct(int id, Product updatedProduct) {
         try {
             PreparedStatement statement = getConnection().prepareStatement(
