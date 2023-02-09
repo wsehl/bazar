@@ -5,9 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import interfaces.IOrderController;
 import models.Controller;
 
-public class OrderController extends Controller {
+public class OrderController extends Controller implements IOrderController {
     public OrderController() throws Exception {
     }
 
