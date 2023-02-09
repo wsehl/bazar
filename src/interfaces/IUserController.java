@@ -11,4 +11,5 @@ public interface IUserController {
     public List<User> getUsersByRole(int id);
     public User getUserByEmail(String email) throws Exception;
     public void setAdminRole(int UserId) throws Exception;
+    public void deleteUser(int UserId) throws Exception;
 }

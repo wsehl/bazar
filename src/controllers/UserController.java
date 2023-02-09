@@ -173,6 +173,14 @@ public class UserController extends Controller implements IUserController {
         }
     }
 
-
+    public void deleteUser(int userId) throws SQLException {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("DELETE FROM users WHERE user_id = ?");
+            statement.setInt(1, userId);
+            statement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
