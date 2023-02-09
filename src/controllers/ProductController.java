@@ -76,6 +76,26 @@ public class ProductController extends Controller {
         return null;
     }
 
+    public List<Product> getProductsByName(String name) {
+        List<Product> products = new ArrayList<>();
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM products WHERE product_name = ?");
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("product_id");
+                String productName = resultSet.getString("product_name");
+                String productDescription = resultSet.getString("product_description");
+                double productPrice = resultSet.getDouble("product_price");
+                products.add(new Product(productId, productName, productDescription, productPrice));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
     public void updateProduct(int id, Product updatedProduct) {
         try {
             PreparedStatement statement = getConnection().prepareStatement(

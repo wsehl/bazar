@@ -212,7 +212,8 @@ public class App {
                 System.out.println("Choose option:\n" +
                         "1 - Output all products\n" +
                         "2 - Output product by ID\n" +
-                        "3 - Back");
+                        "3 - Output products by name\n" +
+                        "4 - Back");
 
                 switch (Integer.parseInt(br.readLine())) {
                     default:
@@ -237,7 +238,7 @@ public class App {
                     // output product by id
                     case 2: {
                         clearConsole();
-                        System.out.println("Enter product ID: ");
+                        System.out.print("Enter product ID: ");
                         int productId = scanner.nextInt();
                         clearConsole();
 
@@ -250,6 +251,26 @@ public class App {
                     }
 
                     case 3: {
+                        clearConsole();
+                        System.out.print("Enter product name: ");
+                        String productName = br.readLine();
+                        while (productName.length() < 2) {
+                            System.out.print("Product name should be longer than 1!\nEnter product name: ");
+                            productName = br.readLine();
+                        }
+
+                        List<Product> products = productController.getProductsByName(productName);
+                        if (products.size() < 1) {
+                            System.out.println("Products with name = \"" + productName + "\" wasn't found\n");
+                            break;
+                        }
+                        clearConsole();
+                        products.forEach(System.out::println);
+                        System.out.print("\n");
+                        break;
+                    }
+
+                    case 4: {
                         clearConsole();
                     }
                 }
