@@ -167,7 +167,7 @@ public class UserController extends Controller implements IUserController {
             statement = getConnection().prepareStatement("UPDATE users SET role_id = ? where user_id = ?");
             statement.setInt(1, 1);
             statement.setInt(2, UserId);
-            statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
