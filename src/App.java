@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -7,6 +8,7 @@ import java.util.regex.Pattern;
 
 import controllers.AuthController;
 import controllers.ProductController;
+import controllers.UserController;
 import exceptions.ObjectNotFoundException;
 import exceptions.UserAlreadyExistsException;
 import models.Product;
@@ -66,10 +68,10 @@ public class App {
 
         ProductController productController = new ProductController();
         AuthController authController = new AuthController();
+        UserController userController = new UserController();
         Scanner scanner = new Scanner(System.in);
         User user = null;
         boolean isActive = false;
-        int roleId = 0;
         clearConsole();
         System.out.println("████████████████████████████████\n" +
                 "████████████████████████████████\n" +
@@ -110,9 +112,8 @@ public class App {
                     System.out.println("Wrong email or password!");
                     continue;
                 } else {
-                    System.out.println("Welcome to bazar " + user.getFirstName() + " " + user.getLastName() + "!\n");
+                    System.out.println("Welcome to bazar, " + user.getFirstName() + " " + user.getLastName() + "!\n");
                     isActive = true;
-                    roleId = user.getRoleId();
                 }
             } else if (input == 2) {
                 clearConsole();
@@ -191,8 +192,8 @@ public class App {
             int input = -1;
 
             System.out.println("ACCOUNT: " + user.getEmail() +
-                    "\nChoose option:\n" +
-                    "1 - Output product\n" +
+                    "\nChoose option:\n" + ((user.getRoleId() == 1) ? "0 - User controller\n" : "") +
+                    "1 - Output products\n" +
                     "2 - Update product\n" +
                     "3 - Add product\n" +
                     "4 - Delete product\n" +
@@ -201,7 +202,169 @@ public class App {
             input = scanner.nextInt();
 
             // output product
-            if (input == 1) {
+            if (input == 0 && user.getRoleId() == 1) {
+                clearConsole();
+
+                System.out.println("USER CONTROLLER\n" + 
+                        "Choose option:\n" +
+                        "1 - Output users\n" +
+                        "2 - Delete users\n" +
+                        "3 - Set Admin\n" +
+                        "4 - Back");
+                
+                switch(scanner.nextInt()) {
+                    default: {
+                        clearConsole();
+                        System.out.println("Wrong input!");
+                        break;
+                    }
+                    case 1: {
+                        clearConsole();
+                        System.out.println("USER CONTROLLER\n" + 
+                                "Choose option:\n" +
+                                "1 - Output all users\n" +
+                                "2 - Output user by ID\n" +
+                                "3 - Output user by email\n" +
+                                "4 - Output users by first name\n" +
+                                "5 - Output users by second name\n" +
+                                "6 - Output admin users");
+                        switch(scanner.nextInt()) {
+                            default: {
+                                clearConsole(); 
+                                System.out.println("Wrong input!\n"); 
+                                break;
+                            }
+                            case 1: {
+                                clearConsole();
+                                List<User> users = userController.getUsers();
+                                users.forEach(System.out::println);
+                                System.out.println('\n');
+                                break;
+                            }
+                            case 2: {
+                                clearConsole();
+                                System.out.print("OUTPUT USER BY ID\nEnter user ID: ");
+                                int userId = scanner.nextInt();
+                                try {
+                                    clearConsole();
+                                    System.out.println(userController.getUserById(userId) + "\n");
+                                } catch (ObjectNotFoundException e) {
+                                    System.out.println(e.getMessage() + "\n");
+                                }
+                                break;
+                            }
+                            case 3: {
+                                clearConsole();
+                                System.out.print("OUTPUT USER BY EMAIL\nEnter user email: ");
+                                String email = br.readLine();
+                                while (!validateEmail(email)) {
+                                    clearConsole();
+                                    System.out.print("Wrong input!\nOUTPUT USER BY EMAIL\nEnter user email: ");
+                                    email = br.readLine();
+                                }
+                                clearConsole();
+
+                                try {
+                                    System.out.println(userController.getUserByEmail(email) + "\n");
+                                } catch (ObjectNotFoundException e) {
+                                    System.out.println(e.getMessage() + "\n");
+                                }
+                                break;
+                            }
+                            case 4: {
+                                clearConsole();
+                                System.out.print("OUTPUT USERS BY FIRST NAME\nEnter first name: ");
+                                String firstName = br.readLine();
+                                List<User> users;
+                                clearConsole();
+                                try {
+                                    users = userController.getUsersByFirstName(firstName);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    break;
+                                }
+                                if (users.size() < 1) {
+                                    System.out.println("Users with first name \"" + firstName + "\" wasn't found");
+                                } else {
+                                    users.forEach(System.out::println);
+                                    System.out.println("\n");
+                                }
+                                
+                                break;
+                            }
+                            case 5: {
+                                clearConsole();
+                                System.out.print("OUTPUT USERS BY SECOND NAME\nEnter second name: ");
+                                String secondName = br.readLine();
+                                List<User> users;
+                                clearConsole();
+                                try {
+                                    users = userController.getUsersByFirstName(secondName);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    break;
+                                }
+                                if (users.size() < 1) {
+                                    System.out.println("Users with second name \"" + secondName + "\" wasn't found\n");
+                                } else {
+                                    users.forEach(System.out::println);
+                                    System.out.println("\n");
+                                }
+                                
+                                break;
+                            }
+                            case 6: {
+                                clearConsole();
+                                List<User> users;
+                                try {
+                                    users = userController.getUsersByRole(1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    break;
+                                }
+                                if (users.size() < 1) {
+                                    System.out.println("Admin users wasn't found\n");
+                                } else if (users.size() == 1) {
+                                    System.out.println("You are the only admin!\n");
+                                } else {
+                                    users.forEach(System.out::println);
+                                    System.out.println("\n");
+                                }
+                                
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 2: {
+                        clearConsole();
+                        System.out.print("DELETE USER\nEnter user ID: ");
+                        int userId = scanner.nextInt();
+                        userController.deleteUser(userId);
+                        clearConsole();
+                        System.out.println("User " + userId + " was deleted successfully!\n");
+                        break;
+                    }
+                    case 3: {
+                        clearConsole();
+                        System.out.print("SET ADMIN\nEnter user id: ");
+                        int userId = scanner.nextInt();
+                        clearConsole();
+                        try {
+                            userController.setAdminRole(userId);
+                        } catch (ObjectNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        clearConsole();
+                        System.out.println("User " + userId + " become an Admin!\n");
+                        break;
+                    }
+                    case 4: {
+                        clearConsole();
+                    }
+                }
+            }
+            else if (input == 1) {
                 clearConsole();
 
                 System.out.println("Choose option:\n" +
@@ -211,9 +374,9 @@ public class App {
                         "4 - Output products by price\n" +
                         "5 - Back");
 
-                switch (Integer.parseInt(br.readLine())) {
+                switch (scanner.nextInt()) {
                     default:
-                        System.out.println("Wront input!\n");
+                        System.out.println("Wrong input!\n");
                         break;
 
                     // output all products
@@ -234,7 +397,7 @@ public class App {
                     // output product by id
                     case 2: {
                         clearConsole();
-                        System.out.print("Enter product ID: ");
+                        System.out.print("OUTPUT PRODUCT BY ID\nEnter product ID: ");
                         int productId = scanner.nextInt();
                         clearConsole();
 
@@ -248,7 +411,7 @@ public class App {
 
                     case 3: {
                         clearConsole();
-                        System.out.print("Enter product name: ");
+                        System.out.print("OUTPUT PRODUCT BY NAME\nEnter product name: ");
                         String productName = br.readLine();
                         while (productName.length() < 2) {
                             System.out.print("Product name should be longer than 1!\nEnter product name: ");
@@ -268,7 +431,7 @@ public class App {
 
                     case 4: {
                         clearConsole();
-                        System.out.print("Enter start price: ");
+                        System.out.print("OUTPUT PRODUCT BY PRICE\nEnter start price: ");
                         double start = scanner.nextDouble();
                         System.out.print(start + "\nEnter end price: ");
                         double end = scanner.nextDouble();
@@ -298,7 +461,7 @@ public class App {
             // update product
             else if (input == 2) {
                 clearConsole();
-                if (!(roleId == 1)) {
+                if (!(user.getRoleId() == 1)) {
                     System.out.println("Access denied!\n");
                     continue;
                 }
@@ -325,7 +488,7 @@ public class App {
                         "3 - Update decription\n" +
                         "4 - Back");
 
-                switch (Integer.parseInt(br.readLine())) {
+                switch (scanner.nextInt()) {
                     default:
                         System.out.println("Wrong input!\n");
                         break;
@@ -396,7 +559,7 @@ public class App {
             // add product
             else if (input == 3) {
                 clearConsole();
-                if (!(roleId == 1)) {
+                if (!(user.getRoleId() == 1)) {
                     System.out.println("Access denied!\n");
                     continue;
                 }
@@ -430,7 +593,7 @@ public class App {
             // delete product
             else if (input == 4) {
                 clearConsole();
-                if (!(roleId == 1)) {
+                if (!(user.getRoleId() == 1)) {
                     System.out.println("Access denied!\n");
                     continue;
                 }
