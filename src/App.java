@@ -100,10 +100,8 @@ public class App {
                     System.out.print("SIGN IN\nWrong Email format!\nEmail: ");
                     email = br.readLine();
                 }
-                clearConsole();
 
-                System.out.print("SIGN IN\nEmail: " + email +
-                        "\nPassword: ");
+                System.out.print("Password: ");
                 String password = br.readLine();
 
                 user = authController.login(email, password);
@@ -112,7 +110,7 @@ public class App {
                     System.out.println("Wrong email or password!");
                     continue;
                 } else {
-                    System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName() + "!\n");
+                    System.out.println("Welcome to bazar " + user.getFirstName() + " " + user.getLastName() + "!\n");
                     isActive = true;
                     roleId = user.getRoleId();
                 }
@@ -121,16 +119,14 @@ public class App {
                 System.out.print("REGISTER\nFirst name: ");
                 String name = br.readLine();
                 while (name.length() < 2) {
-                    System.out.print("First name should be longer than 1!\nFirst name: ");
+                    System.out.print("REGISTER\nFirst name should be longer than 1!\nFirst name: ");
                     name = br.readLine();
                 }
-                clearConsole();
 
-                System.out.print("REGISTER\nFirst name: " + name +
-                        "\nSecond name: ");
+                System.out.print("Second name: ");
                 String surname = br.readLine();
                 while (surname.length() < 2) {
-                    System.out.print("Second name should be longer than 1!\nSecond name: ");
+                    System.out.print("REGISTER\nSecond name should be longer than 1!\nSecond name: ");
                     surname = br.readLine();
                 }
                 clearConsole();
@@ -154,8 +150,7 @@ public class App {
 
                 while (!validatePassword(password)) {
                     clearConsole();
-                    System.out.println("Password must contain at least 8 symbols \n");
-                    System.out.print("Password: ");
+                    System.out.print("Password must contain at least 8 symbols\nPassword: ");
 
                     password = br.readLine();
                 }
