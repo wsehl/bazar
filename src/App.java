@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -205,14 +204,14 @@ public class App {
             if (input == 0 && user.getRoleId() == 1) {
                 clearConsole();
 
-                System.out.println("USER CONTROLLER\n" + 
+                System.out.println("USER CONTROLLER\n" +
                         "Choose option:\n" +
                         "1 - Output users\n" +
                         "2 - Delete users\n" +
                         "3 - Set Admin\n" +
                         "4 - Back");
-                
-                switch(scanner.nextInt()) {
+
+                switch (scanner.nextInt()) {
                     default: {
                         clearConsole();
                         System.out.println("Wrong input!");
@@ -220,7 +219,7 @@ public class App {
                     }
                     case 1: {
                         clearConsole();
-                        System.out.println("USER CONTROLLER\n" + 
+                        System.out.println("USER CONTROLLER\n" +
                                 "Choose option:\n" +
                                 "1 - Output all users\n" +
                                 "2 - Output user by ID\n" +
@@ -228,10 +227,10 @@ public class App {
                                 "4 - Output users by first name\n" +
                                 "5 - Output users by second name\n" +
                                 "6 - Output admin users");
-                        switch(scanner.nextInt()) {
+                        switch (scanner.nextInt()) {
                             default: {
-                                clearConsole(); 
-                                System.out.println("Wrong input!\n"); 
+                                clearConsole();
+                                System.out.println("Wrong input!\n");
                                 break;
                             }
                             case 1: {
@@ -289,7 +288,7 @@ public class App {
                                     users.forEach(System.out::println);
                                     System.out.println("\n");
                                 }
-                                
+
                                 break;
                             }
                             case 5: {
@@ -310,7 +309,7 @@ public class App {
                                     users.forEach(System.out::println);
                                     System.out.println("\n");
                                 }
-                                
+
                                 break;
                             }
                             case 6: {
@@ -330,7 +329,7 @@ public class App {
                                     users.forEach(System.out::println);
                                     System.out.println("\n");
                                 }
-                                
+
                                 break;
                             }
                         }
@@ -363,8 +362,7 @@ public class App {
                         clearConsole();
                     }
                 }
-            }
-            else if (input == 1) {
+            } else if (input == 1) {
                 clearConsole();
 
                 System.out.println("Choose option:\n" +
@@ -443,7 +441,8 @@ public class App {
 
                         List<Product> products = productController.getProductsByPrice(start, end);
                         if (products.size() < 1) {
-                            System.out.println("Products with price between \"" + start + "\" and \"" + end + " wasn't found\n");
+                            System.out.println(
+                                    "Products with price between \"" + start + "\" and \"" + end + " wasn't found\n");
                             break;
                         }
                         clearConsole();
