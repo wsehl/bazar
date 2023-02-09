@@ -43,7 +43,6 @@ public class AuthController extends Controller {
             preparedStatement.setInt(5, roleId);
             preparedStatement.executeUpdate();
 
-            // Get the generated user ID
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 int userId = resultSet.getInt(1);
