@@ -5,12 +5,14 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private int roleId;
 
-    public User(int id, String firstName, String lastName, String email) {
+    public User(int id, String firstName, String lastName, String email, int roleId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.roleId = roleId;
     }
 
     public int getId() {
@@ -27,6 +29,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public int getRoleId() {
+        return roleId;
     }
 
 }

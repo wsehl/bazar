@@ -47,7 +47,7 @@ public class AuthController extends Controller {
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 int userId = resultSet.getInt(1);
-                return new User(userId, firstName, lastName, email);
+                return new User(userId, firstName, lastName, email, roleId);
             }
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException ex) {
             ex.printStackTrace();
@@ -71,7 +71,8 @@ public class AuthController extends Controller {
                 int userId = resultSet.getInt("user_id");
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
-                return new User(userId, firstName, lastName, email);
+                int roleId = resultSet.getInt("role_id");
+                return new User(userId, firstName, lastName, email, roleId);
             }
 
         } catch (SQLException | InvalidKeySpecException | NoSuchAlgorithmException ex) {
