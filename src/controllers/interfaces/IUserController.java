@@ -5,7 +5,9 @@ import entities.User;
 public interface IUserController {
     String getAllUsers();
 
-    User getUserByEmail(String email);
+    String getUserByEmail(String email);
+
+    String getUsersByFirstName(String firstName);
 
     String getUser(int id);
 

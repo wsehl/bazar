@@ -30,6 +30,22 @@ public class UserController implements IUserController {
         return sb.toString();
     }
 
+    public String getUsersByFirstName(String firstName) {
+        List<User> users = userRepository.getUsersByFirstName(firstName);
+
+        if (users.size() == 0) {
+            return "No users with first name \'" + firstName + "\' found";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (User user : users) {
+            sb.append(user.toString()).append("\n");
+        }
+
+        return sb.toString();
+    }
+
     public String getUser(int id) {
         if (id < 0)
             throw new IllegalArgumentException("Id cannot be negative");
