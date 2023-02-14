@@ -14,15 +14,6 @@ public class ProductController implements IProductController {
     }
 
     public String addProduct(Product product) {
-        if (product.getName().length() < 3)
-            return "Product name must be at least 3 characters long";
-
-        if (product.getDescription().length() < 10)
-            return "Product description must be at least 10 characters long";
-
-        if (product.getPrice() < 0)
-            return "Product price cannot be negative";
-
         int id = productRepository.createProduct(product);
 
         if (id == -1)
@@ -35,21 +26,12 @@ public class ProductController implements IProductController {
         if (id < 0)
             throw new IllegalArgumentException("Id cannot be negative");
 
-        if (product.getName().length() < 3)
-            return "Product name must be at least 3 characters long";
-
-        if (product.getDescription().length() < 10)
-            return "Product description must be at least 10 characters long";
-
-        if (product.getPrice() < 0)
-            return "Product price cannot be negative";
-
         boolean updated = productRepository.updateProduct(id, product);
 
         if (!updated)
-            return "Product could not be updated";
+            return "Product " + id + " could not be updated";
 
-        return "Product updated";
+        return "Product" + id + "updated";
     }
 
     public String deleteProduct(int id) {
