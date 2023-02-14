@@ -9,6 +9,8 @@ public interface IUserController {
 
     String getUsersByFirstName(String firstName);
 
+    String getUsersByLastName(String lastName);
+
     String getUser(int id);
 
     boolean login(String email, String password);

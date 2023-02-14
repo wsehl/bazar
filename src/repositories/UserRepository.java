@@ -86,6 +86,49 @@ public class UserRepository implements IUserRepository {
                 String userSecondName = resultSet.getString("last_name");
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
+
+                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+
+                users.add(user);
+
+                return users;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NoDatabaseConnectionException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public List<User> getUsersByLastName(String lastName) {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+
+            String query = "SELECT * FROM users WHERE last_name = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            
+            statement.setString(1, lastName);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            List<User> users = new ArrayList<>();
+
+            while (resultSet.next()) {
+                int userId = resultSet.getInt("user_id");
+                String userFirstName = resultSet.getString("first_name");
+                String userSecondName = resultSet.getString("last_name");
+                String userEmail = resultSet.getString("email");
+                int userRoleId = resultSet.getInt("role_id");
                 
                 User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
 
