@@ -42,7 +42,7 @@ public class UserController implements IUserController {
         return foundUser.toString();
     }
 
-    public User getUserByEmail(String email) {
+    public String getUserByEmail(String email) {
         if (email == null || email.isEmpty())
             throw new IllegalArgumentException("Email cannot be null or empty");
 
@@ -51,7 +51,7 @@ public class UserController implements IUserController {
         if (foundUser == null)
             return "User not found";
 
-        return foundUser;
+        return foundUser.toString();
     }
 
     public boolean login(String email, String password) {
