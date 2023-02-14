@@ -73,6 +73,7 @@ public class AdminMenu {
         Scanner scanner = new Scanner(System.in);
         int input = -1;
 
+        clearConsole();
         while(true) {
             
             System.out.println("ACCOUNT: " + currentUser.getEmail() +
