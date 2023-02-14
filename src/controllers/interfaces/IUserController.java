@@ -11,6 +11,8 @@ public interface IUserController {
 
     String getUsersByLastName(String lastName);
 
+    public String getUsersByRoleId(int roleId);
+
     String getUser(int id);
 
     boolean login(String email, String password);
