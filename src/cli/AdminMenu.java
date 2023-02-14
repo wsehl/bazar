@@ -3,16 +3,13 @@ package cli;
 import entities.Product;
 import entities.User;
 import repositories.ProductRepository;
-import repositories.UserRepository;
 
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import controllers.ProductController;
 import controllers.UserController;
-import db.PostgresDB;
 
 public class AdminMenu {
 
@@ -190,7 +187,6 @@ public class AdminMenu {
                             }
                             case 6: {
                                 clearConsole();
-                                List<User> users;
                                 System.out.println(userController.getUsersByRoleId(1) + "\n");
 
                                 break;
