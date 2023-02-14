@@ -49,7 +49,7 @@ public class UserController implements IUserController {
         User foundUser = userRepository.getUserByEmail(email);
 
         if (foundUser == null)
-            return null;
+            return "User not found";
 
         return foundUser;
     }
