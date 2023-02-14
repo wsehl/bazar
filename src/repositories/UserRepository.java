@@ -274,6 +274,36 @@ public class UserRepository implements IUserRepository {
         return null;
     }
 
+    public boolean changeUserRole(int userId, int newRoleId) {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+
+            String query = "UPDATE users SET role_id = ? WHERE user_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, newRoleId);
+            statement.setInt(2, userId);
+
+            statement.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NoDatabaseConnectionException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
     public boolean authenticateUser(String email, String password) {
         Connection connection = null;
 

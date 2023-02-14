@@ -146,4 +146,17 @@ public class UserController implements IUserController {
 
         return "User not found";
     }
+
+    public String changeUserRole(int userId, int newRoleId) {
+        if (userId < 0 || newRoleId < 0)
+            return "Id cannot be negative";
+
+        boolean changed = userRepository.changeUserRole(userId, newRoleId);
+
+        if (changed)
+            return "User's role updated successfully";
+
+        return "User not found";
+    }
+
 }
