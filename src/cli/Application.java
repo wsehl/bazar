@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Application {
     private final UserController userController;
@@ -20,7 +21,7 @@ public class Application {
 
     private Cart currentCart;
 
-    private BufferedReader br;
+    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     private Scanner scanner;
 
@@ -142,10 +143,11 @@ public class Application {
             } else if (input == 2) {
                 clearConsole();
                 System.out.print("SIGNUP\nFirst name: ");
-                br.readLine();
+                
+                String firstName=br.readLine();
 
                 System.out.print("Last name: ");
-                br.readLine();
+                String lastName=br.readLine();
 
                 System.out.print("Email: ");
                 String email = scanner.next();
