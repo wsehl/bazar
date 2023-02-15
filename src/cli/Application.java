@@ -17,7 +17,7 @@ public class Application {
 
     private User currentUser;
 
-    private Cart cart;
+    private Cart currentCart;
 
     private Scanner scanner;
 
@@ -27,7 +27,7 @@ public class Application {
 
         scanner = new Scanner(System.in);
 
-        cart = new Cart();
+        currentCart = new Cart();
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
@@ -676,10 +676,12 @@ public class Application {
                 Product product = productController.getProduct(productId);
 
                 if (product != null) {
-                    cart.addProduct(product);
+                    currentCart.addProduct(product);
                     System.out.println("Product " + productId + " added to cart");
                 }
-            } else if (input == 3) {
+            }
+            // delete product from cart
+            else if (input == 3) {
                 clearConsole();
 
                 System.out.print("DELETE PRODUCT FROM CART\nEnter product ID: ");
@@ -688,18 +690,18 @@ public class Application {
                 Product product = productController.getProduct(productId);
 
                 if (product != null) {
-                    cart.removeProduct(product);
+                    currentCart.removeProduct(product);
                     System.out.println("Product " + productId + " removed from cart");
                 }
-                // delete product from cart
-            } else if (input == 4) {
-                // check cart
+            }
+            // check cart
+            else if (input == 4) {
                 clearConsole();
-
-                System.out.println(cart);
-            } else if (input == 5) {
+                System.out.println(currentCart);
+            }
+            // create order
+            else if (input == 5) {
                 clearConsole();
-                // create order
             } else if (input == 6) {
                 clearConsole();
                 System.out.println("bazar CLI closed\n");
