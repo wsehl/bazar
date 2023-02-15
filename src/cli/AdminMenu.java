@@ -9,26 +9,29 @@ import controllers.ProductController;
 import controllers.UserController;
 
 public class AdminMenu extends Menu {
+    private final Scanner scanner;
 
     private UserController userController;
     private ProductController productController;
     private ProductRepository productRepository;
 
-    public AdminMenu(UserController controller, ProductController productController, ProductRepository productRepository) {
+    public AdminMenu(UserController controller, ProductController productController,
+            ProductRepository productRepository) {
         this.userController = controller;
         this.productController = productController;
         this.productRepository = productRepository;
+
+        scanner = new Scanner(System.in);
     }
 
     public void run(User currentUser) {
-        Scanner scanner = new Scanner(System.in);
         int input = -1;
 
         clearConsole();
-        while(true) {
-            
+        while (true) {
+
             System.out.println("ACCOUNT: " + currentUser.getEmail() +
-                    "\nChoose option:\n" + 
+                    "\nChoose option:\n" +
                     "0 - User controller\n" +
                     "1 - Output products\n" +
                     "2 - Update product\n" +
@@ -86,18 +89,18 @@ public class AdminMenu extends Menu {
                                 } catch (IllegalArgumentException e) {
                                     System.out.println(e.getMessage());
                                 }
-                                
+
                                 break;
                             }
                             case 3: {
                                 clearConsole();
                                 System.out.print("OUTPUT USER BY EMAIL\nEnter user email: ");
-                                String email = scanner.nextLine();
+                                String email = scanner.next();
 
                                 while (!validateEmail(email)) {
                                     clearConsole();
                                     System.out.print("Wrong input!\nOUTPUT USER BY EMAIL\nEnter user email: ");
-                                    email = scanner.nextLine();
+                                    email = scanner.next();
                                 }
                                 clearConsole();
 
@@ -112,11 +115,12 @@ public class AdminMenu extends Menu {
                             case 4: {
                                 clearConsole();
                                 System.out.print("OUTPUT USERS BY FIRST NAME\nEnter first name: ");
-                                String firstName = scanner.nextLine();
+                                String firstName = scanner.next();
 
                                 while (firstName.length() < 1) {
-                                    System.out.print("Name should be longer than 1!\nOUTPUT USER BY FIRST NAME\nEnter first name: ");
-                                    firstName = scanner.nextLine();
+                                    System.out.print(
+                                            "Name should be longer than 1!\nOUTPUT USER BY FIRST NAME\nEnter first name: ");
+                                    firstName = scanner.next();
                                 }
                                 clearConsole();
                                 System.out.println(userController.getUsersByFirstName(firstName) + "\n");
@@ -126,11 +130,12 @@ public class AdminMenu extends Menu {
                             case 5: {
                                 clearConsole();
                                 System.out.print("OUTPUT USERS BY LAST NAME\nEnter last name: ");
-                                String lastName = scanner.nextLine();
+                                String lastName = scanner.next();
 
                                 while (lastName.length() < 1) {
-                                    System.out.print("Name should be longer than 1!\nOUTPUT USER BY LAST NAME\nEnter last name: ");
-                                    lastName = scanner.nextLine();
+                                    System.out.print(
+                                            "Name should be longer than 1!\nOUTPUT USER BY LAST NAME\nEnter last name: ");
+                                    lastName = scanner.next();
                                 }
                                 clearConsole();
                                 System.out.println(userController.getUsersByLastName(lastName) + "\n");
@@ -202,11 +207,11 @@ public class AdminMenu extends Menu {
                     case 3: {
                         clearConsole();
                         System.out.print("OUTPUT PRODUCT BY NAME\nEnter product name: ");
-                        String productName = scanner.nextLine();
+                        String productName = scanner.next();
 
                         while (productName.length() < 2) {
                             System.out.print("Product name should be longer than 1!\nEnter product name: ");
-                            productName = scanner.nextLine();
+                            productName = scanner.next();
                         }
 
                         clearConsole();
@@ -253,7 +258,7 @@ public class AdminMenu extends Menu {
                 clearConsole();
 
                 updatedProduct = productRepository.getProduct(productId);
-                
+
                 while (updatedProduct == null) {
                     clearConsole();
                     System.out.print("Wrong input!\nEnter product ID: ");
@@ -261,8 +266,8 @@ public class AdminMenu extends Menu {
                     updatedProduct = productRepository.getProduct(productId);
                 }
 
-                System.out.println("UPDATE PRODUCT: " + productId + 
-                    "\nChoose option:\n" +
+                System.out.println("UPDATE PRODUCT: " + productId +
+                        "\nChoose option:\n" +
                         "1 - Update name\n" +
                         "2 - Update price\n" +
                         "3 - Update decription\n" +
@@ -279,7 +284,7 @@ public class AdminMenu extends Menu {
                         System.out.print("UPDATE PRODUCT: " + productId +
                                 "\nCurrent name: " + updatedProduct.getName() +
                                 "\nEnter new name: ");
-                        name = scanner.nextLine();
+                        name = scanner.next();
                         while (name.length() < 2) {
                             System.out.print("UPDATE PRODUCT: " + productId
                                     + "\nName should be longer than 1!\nEnter new name: ");
@@ -312,11 +317,11 @@ public class AdminMenu extends Menu {
                         System.out.print("UPDATE PRODUCT: " + productId +
                                 "\nCurrent description: " + updatedProduct.getDescription() +
                                 "\nEnter new description: ");
-                        description = scanner.nextLine();
+                        description = scanner.next();
                         while (description.length() < 5) {
                             System.out.print("UPDATE PRODUCT: " + productId
                                     + "\nDescription should be longer than 5!\nEnter new description: ");
-                            description = scanner.nextLine();
+                            description = scanner.next();
                         }
                         clearConsole();
 
@@ -341,7 +346,7 @@ public class AdminMenu extends Menu {
                 double price = scanner.nextDouble();
 
                 System.out.print(price + "\nDescription: ");
-                String description = scanner.nextLine();
+                String description = scanner.next();
 
                 if (name.length() < 2 && price < 0 && description.length() < 2) {
                     clearConsole();
@@ -362,7 +367,7 @@ public class AdminMenu extends Menu {
                 clearConsole();
 
                 System.out.print("DELETE PRODUCT: " + productId + "\nAre you sure? (y/n): ");
-                String confirmation = scanner.nextLine();
+                String confirmation = scanner.next();
 
                 switch (confirmation) {
                     default:
@@ -370,7 +375,8 @@ public class AdminMenu extends Menu {
                         break;
                     case "y": {
                         clearConsole();
-                        System.out.println(productController.deleteProduct(productId));;
+                        System.out.println(productController.deleteProduct(productId));
+                        ;
                     }
                     case "n": {
                         clearConsole();

@@ -36,7 +36,6 @@ public class AuthMenu extends Menu {
                 clearConsole();
                 System.out.print("LOGIN\nEmail: ");
                 String email = scanner.next();
-
                 while(!validateEmail(email)) {
                     clearConsole();
                     System.out.print("LOGIN\nWrong email format!\nEmail: ");
