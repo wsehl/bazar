@@ -10,6 +10,7 @@ import entities.Cart;
 import java.util.regex.Pattern;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.io.BufferedReader;
 
 public class Application {
     private final UserController userController;
@@ -19,13 +20,16 @@ public class Application {
 
     private Cart currentCart;
 
+    private BufferedReader br;
+
     private Scanner scanner;
 
     public Application(UserController useController, ProductController productController) {
         this.userController = useController;
         this.productController = productController;
 
-        scanner = new Scanner(System.in);
+        br=new BufferedReader(br);
+        scanner=new Scanner(System.in);
 
         currentCart = new Cart();
     }
