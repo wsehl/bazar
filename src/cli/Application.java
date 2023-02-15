@@ -92,7 +92,7 @@ public class Application {
                         "████████████████████████████████");
     }
 
-    public void run() {
+    public void run() throws Exception{
         currentUser = authMenu();
         int userRole = currentUser.getRoleId();
 
