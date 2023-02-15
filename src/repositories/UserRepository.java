@@ -73,7 +73,7 @@ public class UserRepository implements IUserRepository {
 
             String query = "SELECT * FROM users WHERE first_name = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            
+
             statement.setString(1, firstName);
 
             ResultSet resultSet = statement.executeQuery();
@@ -116,7 +116,7 @@ public class UserRepository implements IUserRepository {
 
             String query = "SELECT * FROM users WHERE last_name = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            
+
             statement.setString(1, lastName);
 
             ResultSet resultSet = statement.executeQuery();
@@ -129,7 +129,7 @@ public class UserRepository implements IUserRepository {
                 String userSecondName = resultSet.getString("last_name");
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
-                
+
                 User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
 
                 users.add(user);
@@ -159,7 +159,7 @@ public class UserRepository implements IUserRepository {
 
             String query = "SELECT * FROM users WHERE role_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            
+
             statement.setInt(1, roleId);
 
             ResultSet resultSet = statement.executeQuery();
@@ -172,7 +172,7 @@ public class UserRepository implements IUserRepository {
                 String userSecondName = resultSet.getString("last_name");
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
-                
+
                 User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
 
                 users.add(user);

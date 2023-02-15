@@ -90,16 +90,16 @@ public class UserController implements IUserController {
         return foundUser.toString();
     }
 
-    public String getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         if (email == null || email.isEmpty())
             throw new IllegalArgumentException("Email cannot be null or empty");
 
         User foundUser = userRepository.getUserByEmail(email);
 
         if (foundUser == null)
-            return "User not found";
+            System.out.println("User not found");
 
-        return foundUser.toString();
+        return foundUser;
     }
 
     public boolean login(String email, String password) {

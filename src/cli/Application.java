@@ -8,23 +8,18 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import controllers.UserController;
 
-import repositories.ProductRepository;
-import repositories.UserRepository;
-
 public class Application {
     private final UserController userController;
     private final ProductController productController;
-    private final UserRepository userRepository;
-    private final ProductRepository productRepository;
+
     private User currentUser;
+
     private Scanner scanner;
 
-    public Application(UserController controller, ProductController productController, UserRepository userRepository,
-            ProductRepository productRepository) {
+    public Application(UserController controller, ProductController productController) {
         this.userController = controller;
         this.productController = productController;
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
+
         this.scanner = new Scanner(System.in);
     }
 
@@ -74,7 +69,7 @@ public class Application {
         return bar;
     }
 
-    public void outputLogo() {
+    public void printAppLogo() {
         System.out.println(
                 "\n████████████████████████████████\n" +
                         "██░░░░░░░░░░░░███░░░░░░░░░░░░░██\n" +
@@ -88,6 +83,7 @@ public class Application {
     public void run() {
         currentUser = authMenu();
         int userRole = currentUser.getRoleId();
+
         if (userRole == 1) {
             adminMenu();
         } else {
@@ -99,7 +95,7 @@ public class Application {
         int input = -1;
         User user;
         clearConsole();
-        outputLogo();
+        printAppLogo();
         System.out.println("________________________________\n");
         System.out.println("Welcome to bazar!©");
         System.out.println("________________________________\n");
@@ -130,7 +126,7 @@ public class Application {
                     continue;
                 }
 
-                return userRepository.getUserByEmail(email);
+                return userController.getUserByEmail(email);
 
             } else if (input == 2) {
                 clearConsole();
@@ -208,8 +204,8 @@ public class Application {
         int input = -1;
 
         clearConsole();
-        while (true) {
 
+        while (true) {
             System.out.println("ACCOUNT: " + currentUser.getEmail() +
                     "\nChoose option:\n" +
                     "0 - User controller\n" +
@@ -423,7 +419,6 @@ public class Application {
                     }
                 }
             }
-
             // update product
             else if (input == 2) {
                 clearConsole();
@@ -437,13 +432,13 @@ public class Application {
                 productId = scanner.nextInt();
                 clearConsole();
 
-                updatedProduct = productRepository.getProduct(productId);
+                updatedProduct = productController.getProduct(productId);
 
                 while (updatedProduct == null) {
                     clearConsole();
                     System.out.print("Wrong input!\nEnter product ID: ");
                     productId = scanner.nextInt();
-                    updatedProduct = productRepository.getProduct(productId);
+                    updatedProduct = productController.getProduct(productId);
                 }
 
                 System.out.println("UPDATE PRODUCT: " + productId +
@@ -514,7 +509,6 @@ public class Application {
                     }
                 }
             }
-
             // add product
             else if (input == 3) {
                 clearConsole();
@@ -537,7 +531,6 @@ public class Application {
                     System.out.println(productController.addProduct(product));
                 }
             }
-
             // delete product
             else if (input == 4) {
                 clearConsole();
@@ -565,20 +558,17 @@ public class Application {
                     }
                 }
             }
-
             // exit program
             else if (input == 5) {
                 clearConsole();
                 System.out.println("bazar CLI closed\n");
                 return;
             }
-
             // wrong input
             else {
                 clearConsole();
                 System.out.println("Wrong input!\n");
             }
-
         }
     }
 
@@ -586,16 +576,16 @@ public class Application {
         int input = -1;
 
         clearConsole();
-        while(true) {
-            
+
+        while (true) {
             System.out.println("ACCOUNT: " + currentUser.getEmail() +
-                    "\nChoose option:\n" + 
+                    "\nChoose option:\n" +
                     "1 - Output products\n" +
                     "2 - Add product to cart\n" +
                     "3 - Delete product from cart\n" +
                     "4 - Check cart\n" +
                     "5 - Make order\n" +
-                    "6 - Close CLI" );
+                    "6 - Close CLI");
 
             input = scanner.nextInt();
 
@@ -670,29 +660,23 @@ public class Application {
                         clearConsole();
                     }
                 }
-            }
-            else if (input == 2) {
+            } else if (input == 2) {
                 clearConsole();
                 // add product to cart
-            }
-            else if (input == 3) {
+            } else if (input == 3) {
                 clearConsole();
                 // delete product from cart
-            }
-            else if (input == 4) {
+            } else if (input == 4) {
                 clearConsole();
                 // check cart
-            }
-            else if (input == 5) {
+            } else if (input == 5) {
                 clearConsole();
                 // create order
-            }
-            else if (input == 6) {
+            } else if (input == 6) {
                 clearConsole();
                 System.out.println("bazar CLI closed\n");
                 return;
-            }
-            else {
+            } else {
                 clearConsole();
                 System.out.println("Wrong input!");
             }

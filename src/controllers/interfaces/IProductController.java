@@ -9,7 +9,7 @@ public interface IProductController {
 
     String updateProduct(int id, Product product);
 
-    String getProduct(int id);
+    Product getProduct(int id);
 
     String getAllProducts();
 

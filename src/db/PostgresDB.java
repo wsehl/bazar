@@ -14,7 +14,6 @@ public class PostgresDB implements IDB {
 
     private Connection connection;
 
-    @Override
     public Connection getConnection() throws NoDatabaseConnectionException {
         try {
             Class.forName("org.postgresql.Driver");

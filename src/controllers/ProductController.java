@@ -46,16 +46,16 @@ public class ProductController implements IProductController {
         return "Product deleted";
     }
 
-    public String getProduct(int id) {
+    public Product getProduct(int id) {
         if (id < 0)
             throw new IllegalArgumentException("Id cannot be negative");
 
         Product foundProduct = productRepository.getProduct(id);
 
         if (foundProduct == null)
-            return "Product not found";
+            System.out.println("Product not found");
 
-        return foundProduct.toString();
+        return foundProduct;
     }
 
     public String getAllProducts() {

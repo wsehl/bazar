@@ -20,9 +20,9 @@ public class App {
             ProductRepository productRepository = new ProductRepository(postgresDb);
             ProductController productController = new ProductController(productRepository);
 
-            Application application = new Application(userController, productController, userRepository, productRepository);
-            application.run();
+            Application app = new Application(userController, productController);
 
+            app.run();
         } catch (NoDatabaseConnectionException e) {
             System.out.println("No database connection. App will be closed.");
         }
