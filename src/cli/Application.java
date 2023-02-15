@@ -1,12 +1,15 @@
 package cli;
 
 import controllers.ProductController;
+import controllers.UserController;
+
 import entities.Product;
 import entities.User;
+import entities.Cart;
+
 import java.util.regex.Pattern;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-import controllers.UserController;
 
 public class Application {
     private final UserController userController;
@@ -14,13 +17,17 @@ public class Application {
 
     private User currentUser;
 
+    private Cart cart;
+
     private Scanner scanner;
 
-    public Application(UserController controller, ProductController productController) {
-        this.userController = controller;
+    public Application(UserController useController, ProductController productController) {
+        this.userController = useController;
         this.productController = productController;
 
-        this.scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
+
+        cart = new Cart();
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
@@ -662,13 +669,34 @@ public class Application {
                 }
             } else if (input == 2) {
                 clearConsole();
-                // add product to cart
+
+                System.out.print("ADD PRODUCT TO CART\nEnter product ID: ");
+
+                int productId = scanner.nextInt();
+                Product product = productController.getProduct(productId);
+
+                if (product != null) {
+                    cart.addProduct(product);
+                    System.out.println("Product " + productId + " added to cart");
+                }
             } else if (input == 3) {
                 clearConsole();
+
+                System.out.print("DELETE PRODUCT FROM CART\nEnter product ID: ");
+
+                int productId = scanner.nextInt();
+                Product product = productController.getProduct(productId);
+
+                if (product != null) {
+                    cart.removeProduct(product);
+                    System.out.println("Product " + productId + " removed from cart");
+                }
                 // delete product from cart
             } else if (input == 4) {
-                clearConsole();
                 // check cart
+                clearConsole();
+
+                System.out.println(cart);
             } else if (input == 5) {
                 clearConsole();
                 // create order
