@@ -8,7 +8,7 @@ import repositories.ProductRepository;
 import repositories.UserRepository;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         IDB postgresDb = new PostgresDB();
 
         try {
