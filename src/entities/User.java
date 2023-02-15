@@ -1,4 +1,4 @@
-package models;
+package entities;
 
 public class User {
     private int id;
@@ -7,12 +7,20 @@ public class User {
     private String email;
     private int roleId;
 
-    public User(int id, String firstName, String lastName, String email, int roleId) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, int roleId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.roleId = roleId;
+    }
+
+    public User(int id, String firstName, String lastName, String email, int roleId) {
+        this(firstName, lastName, email, roleId);
+        setId(id);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

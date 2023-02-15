@@ -1,147 +1,108 @@
 package controllers;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.IProductController;
-import exceptions.ObjectNotFoundException;
-import models.Product;
-import models.Controller;
+import controllers.interfaces.IProductController;
+import entities.Product;
+import repositories.ProductRepository;
 
-public class ProductController extends Controller implements IProductController {
+public class ProductController implements IProductController {
+    private ProductRepository productRepository;
 
-    public ProductController() throws Exception {
+    public ProductController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public int addProduct(Product product) {
-        try {
-            PreparedStatement statement = getConnection().prepareStatement(
-                    "INSERT INTO products (product_name, product_description, product_price) VALUES (?, ?, ?) RETURNING product_id");
-            statement.setString(1, product.getName());
-            statement.setString(2, product.getDescription());
-            statement.setDouble(3, product.getPrice());
+    public String addProduct(Product product) {
+        int id = productRepository.createProduct(product);
 
-            ResultSet resultSet = statement.executeQuery();
+        if (id == -1)
+            return "Product could not be added";
 
-            if (resultSet.next()) {
-                int productId = resultSet.getInt("product_id");
-                return productId;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
+        return "Product added with id: " + id;
     }
 
-    public List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
-        try {
-            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM products");
-            ResultSet resultSet = statement.executeQuery();
+    public String updateProduct(int id, Product product) {
+        if (id < 0)
+            throw new IllegalArgumentException("Id cannot be negative");
 
-            while (resultSet.next()) {
-                int productId = resultSet.getInt("product_id");
-                String productName = resultSet.getString("product_name");
-                String productDescription = resultSet.getString("product_description");
-                double productPrice = resultSet.getDouble("product_price");
-                products.add(new Product(productId, productName, productDescription, productPrice));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
+        boolean updated = productRepository.updateProduct(id, product);
+
+        if (!updated)
+            return "Product " + id + " could not be updated";
+
+        return "Product" + id + "updated";
     }
 
-    public Product getProductById(int id) throws ObjectNotFoundException {
-        try {
-            PreparedStatement statement = getConnection()
-                    .prepareStatement("SELECT * FROM products WHERE product_id = ?");
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int productId = resultSet.getInt("product_id");
-                String productName = resultSet.getString("product_name");
-                String productDescription = resultSet.getString("product_description");
-                double productPrice = resultSet.getDouble("product_price");
-                return new Product(productId, productName, productDescription, productPrice);
-            } else {
-                throw new ObjectNotFoundException("Product " + id + " wasn't found");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String deleteProduct(int id) {
+        if (id < 0)
+            throw new IllegalArgumentException("Id cannot be negative");
+
+        boolean deleted = productRepository.deleteProduct(id);
+
+        if (!deleted)
+            return "Product could not be deleted";
+
+        return "Product deleted";
     }
 
-    public List<Product> getProductsByName(String name) {
-        List<Product> products = new ArrayList<>();
-        try {
-            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM products WHERE product_name = ?");
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
+    public Product getProduct(int id) {
+        if (id < 0)
+            throw new IllegalArgumentException("Id cannot be negative");
 
-            while (resultSet.next()) {
-                int productId = resultSet.getInt("product_id");
-                String productName = resultSet.getString("product_name");
-                String productDescription = resultSet.getString("product_description");
-                double productPrice = resultSet.getDouble("product_price");
-                products.add(new Product(productId, productName, productDescription, productPrice));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
+        Product foundProduct = productRepository.getProduct(id);
+
+        if (foundProduct == null)
+            System.out.println("Product not found");
+
+        return foundProduct;
     }
 
-    public List<Product> getProductsByPrice(double start, double end) {
-        List<Product> products = new ArrayList<>();
-        try {
-            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM products WHERE product_price >= ? and product_price <= ?");
-            statement.setDouble(1, start);
-            statement.setDouble(2, end);
-            ResultSet resultSet = statement.executeQuery();
+    public String getAllProducts() {
+        List<Product> products = productRepository.getProducts();
 
-            while (resultSet.next()) {
-                int productId = resultSet.getInt("product_id");
-                String productName = resultSet.getString("product_name");
-                String productDescription = resultSet.getString("product_description");
-                double productPrice = resultSet.getDouble("product_price");
-                products.add(new Product(productId, productName, productDescription, productPrice));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (products.size() == 0) {
+            return "No products found";
         }
-        return products;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Product product : products) {
+            sb.append(product.toString()).append("\n");
+        }
+
+        return sb.toString();
     }
 
-    public void updateProduct(int id, Product updatedProduct) {
-        try {
-            PreparedStatement statement = getConnection().prepareStatement(
-                    "UPDATE products SET product_name = ?, product_description = ?, product_price = ? WHERE product_id = ?");
-            statement.setString(1, updatedProduct.getName());
-            statement.setString(2, updatedProduct.getDescription());
-            statement.setDouble(3, updatedProduct.getPrice());
-            statement.setInt(4, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public String getProductsByName(String name) {
+        List<Product> products = productRepository.getProductsByName(name);
+
+        if (products.size() == 0) {
+            return "No products found";
         }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Product product : products) {
+            sb.append(product.toString()).append("\n");
+        }
+
+        return sb.toString();
     }
 
-    public void deleteProduct(int id) throws ObjectNotFoundException {
-        try {
-            // check if product exists
-            getProductById(id);
+    public String getProductsByPrice(double start, double end) {
+        List<Product> products = productRepository.getProductsByPrice(start, end);
 
-            PreparedStatement statement = getConnection().prepareStatement("DELETE FROM products WHERE product_id = ?");
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new ObjectNotFoundException("Product " + id + " wasn't found");
+        if (products.size() == 0) {
+            return "No products found";
         }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Product product : products) {
+            sb.append(product.toString()).append("\n");
+        }
+
+        return sb.toString();
     }
 }
