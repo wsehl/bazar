@@ -8,29 +8,27 @@ import entities.User;
 import entities.Cart;
 
 import java.util.regex.Pattern;
-import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.util.Scanner;
+import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Application {
     private final UserController userController;
     private final ProductController productController;
 
     private User currentUser;
-
     private Cart currentCart;
 
-    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    private BufferedReader br;
     private Scanner scanner;
 
     public Application(UserController useController, ProductController productController) {
         this.userController = useController;
         this.productController = productController;
 
-        br = new BufferedReader(br);
+        br = new BufferedReader(new InputStreamReader(System.in));
         scanner = new Scanner(System.in);
 
         currentCart = new Cart();
@@ -145,12 +143,10 @@ public class Application {
                 try {
                     clearConsole();
                     System.out.print("SIGNUP\nFirst name: ");
-                    String firstName;
-                    firstName = br.readLine();
+                    String firstName = br.readLine();
 
                     System.out.print("Last name: ");
-                    String lastName;
-                    lastName = br.readLine();
+                    String lastName = br.readLine();
 
                     System.out.print("Email: ");
                     String email = scanner.next();
