@@ -142,10 +142,10 @@ public class Application {
             } else if (input == 2) {
                 clearConsole();
                 System.out.print("SIGNUP\nFirst name: ");
-                String firstName = scanner.next();
+                br.readLine();
 
                 System.out.print("Last name: ");
-                String lastName = scanner.next();
+                br.readLine();
 
                 System.out.print("Email: ");
                 String email = scanner.next();
