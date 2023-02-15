@@ -1,19 +1,23 @@
 package cli;
 
+import controllers.OrderController;
 import controllers.ProductController;
 import controllers.UserController;
 
 import entities.Product;
 import entities.User;
 import entities.Cart;
+import entities.Order;
 
 import java.util.regex.Pattern;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class Application {
     private final UserController userController;
     private final ProductController productController;
+    private final OrderController orderController;
 
     private User currentUser;
 
@@ -21,9 +25,11 @@ public class Application {
 
     private Scanner scanner;
 
-    public Application(UserController useController, ProductController productController) {
+    public Application(UserController useController, ProductController productController,
+            OrderController orderController) {
         this.userController = useController;
         this.productController = productController;
+        this.orderController = orderController;
 
         scanner = new Scanner(System.in);
 
@@ -592,7 +598,8 @@ public class Application {
                     "3 - Delete product from cart\n" +
                     "4 - Check cart\n" +
                     "5 - Make order\n" +
-                    "6 - Close CLI");
+                    "6 - Check my orders\n" +
+                    "7 - Close CLI");
 
             input = scanner.nextInt();
 
@@ -664,6 +671,7 @@ public class Application {
                     }
 
                     case 5: {
+
                         clearConsole();
                     }
                 }
@@ -709,7 +717,23 @@ public class Application {
             // create order
             else if (input == 5) {
                 clearConsole();
+
+                System.out.println(orderController.placeOrder(currentUser.getId(), currentCart.getProducts()));
             } else if (input == 6) {
+                clearConsole();
+
+                List<Order> orders = orderController.getOrdersForUser(currentUser.getId());
+
+                if (orders.size() == 0) {
+                    System.out.println("You have no orders\n");
+                } else {
+                    for (Order order : orders) {
+                        System.out.println("=====================================");
+                        System.out.println(order);
+                        System.out.println("=====================================\n");
+                    }
+                }
+            } else if (input == 7) {
                 clearConsole();
                 System.out.println("bazar CLI closed\n");
                 return;
