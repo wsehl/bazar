@@ -103,7 +103,7 @@ public class Application {
         }
     }
 
-    public User authMenu() {
+    public User authMenu() throws Exception {
         int input = -1;
         User user;
         clearConsole();
