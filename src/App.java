@@ -20,8 +20,7 @@ public class App {
             ProductRepository productRepository = new ProductRepository(postgresDb);
             ProductController productController = new ProductController(productRepository);
 
-            Application application = new Application(userController, productController);
-
+            Application application = new Application(userController, productController, userRepository, productRepository);
             application.run();
 
         } catch (NoDatabaseConnectionException e) {
