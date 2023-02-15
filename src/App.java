@@ -8,7 +8,7 @@ import repositories.ProductRepository;
 import repositories.UserRepository;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         IDB postgresDb = new PostgresDB();
 
         try {
@@ -22,7 +22,7 @@ public class App {
 
             Application app = new Application(userController, productController);
 
-            app.run(); 
+            app.run();
         } catch (NoDatabaseConnectionException e) {
             System.out.println("No database connection. App will be closed.");
         }
