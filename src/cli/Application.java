@@ -677,7 +677,7 @@ public class Application {
 
                 if (product != null) {
                     currentCart.addProduct(product);
-                    System.out.println("Product " + productId + " added to cart");
+                    System.out.println("Product " + productId + " added to cart\n");
                 }
             }
             // delete product from cart
@@ -689,15 +689,22 @@ public class Application {
                 int productId = scanner.nextInt();
                 Product product = productController.getProduct(productId);
 
-                if (product != null) {
+                boolean existInCart = currentCart.isInCart(product);
+
+                if (!existInCart) {
+                    System.out.println("Product " + productId + " is not in cart\n");
+                }
+
+                if (product != null && existInCart) {
                     currentCart.removeProduct(product);
-                    System.out.println("Product " + productId + " removed from cart");
+                    System.out.println("Product " + productId + " removed from cart\n");
                 }
             }
             // check cart
             else if (input == 4) {
                 clearConsole();
                 System.out.println(currentCart);
+                System.out.println();
             }
             // create order
             else if (input == 5) {
