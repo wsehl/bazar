@@ -22,7 +22,7 @@ public class App {
 
             Application app = new Application(userController, productController);
 
-            app.run();
+            app.run() throws Exception; 
         } catch (NoDatabaseConnectionException e) {
             System.out.println("No database connection. App will be closed.");
         }
