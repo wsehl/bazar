@@ -10,6 +10,10 @@ public class Cart {
         products = new ArrayList<>();
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
     public boolean isInCart(Product product) {
         for (Product p : products) {
             if (p.getId() == product.getId())
@@ -21,6 +25,10 @@ public class Cart {
 
     public void addProduct(Product product) {
         products.add(product);
+    }
+
+    public void addProducts(List<Product> products) {
+        this.products.addAll(products);
     }
 
     public void removeProduct(Product product) {

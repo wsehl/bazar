@@ -1,9 +1,11 @@
 import cli.Application;
+import controllers.OrderController;
 import controllers.ProductController;
 import controllers.UserController;
 import db.PostgresDB;
 import db.interfaces.IDB;
 import exceptions.NoDatabaseConnectionException;
+import repositories.OrderRepository;
 import repositories.ProductRepository;
 import repositories.UserRepository;
 
@@ -20,7 +22,11 @@ public class App {
             ProductRepository productRepository = new ProductRepository(postgresDb);
             ProductController productController = new ProductController(productRepository);
 
-            Application app = new Application(userController, productController);
+            OrderRepository orderRepository = new OrderRepository(postgresDb);
+            OrderController orderController = new OrderController(orderRepository);
+
+            Application app = new Application(userController, productController,
+                    orderController);
 
             app.run();
         } catch (NoDatabaseConnectionException e) {
