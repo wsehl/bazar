@@ -691,10 +691,13 @@ public class Application {
 
                 int productId = scanner.nextInt();
                 Product product = productController.getProduct(productId);
+                clearConsole();
 
                 if (product != null) {
                     currentCart.addProduct(product);
                     System.out.println("Product " + productId + " added to cart\n");
+                } else {
+                    System.out.println("Product " + productId + " wasn't found\n");
                 }
             }
             // delete product from cart
@@ -707,6 +710,7 @@ public class Application {
                 Product product = productController.getProduct(productId);
 
                 boolean existInCart = currentCart.isInCart(product);
+                clearConsole();
 
                 if (!existInCart) {
                     System.out.println("Product " + productId + " is not in cart\n");
@@ -720,14 +724,13 @@ public class Application {
             // check cart
             else if (input == 4) {
                 clearConsole();
-                System.out.println(currentCart);
-                System.out.println();
+                System.out.println(currentCart + "\n\n");
             }
             // create order
             else if (input == 5) {
                 clearConsole();
 
-                System.out.println(orderController.placeOrder(currentUser.getId(), currentCart.getProducts()));
+                System.out.println(orderController.placeOrder(currentUser.getId(), currentCart.getProducts()) + "\n");
             } else if (input == 6) {
                 clearConsole();
 
@@ -748,7 +751,7 @@ public class Application {
                 return;
             } else {
                 clearConsole();
-                System.out.println("Wrong input!");
+                System.out.println("Wrong input!\n");
             }
         } // end while(true) loop
 
