@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class Application {
     private final UserController userController;
@@ -20,9 +23,9 @@ public class Application {
     private final OrderController orderController;
 
     private User currentUser;
-
     private Cart currentCart;
 
+    private BufferedReader br;
     private Scanner scanner;
 
     public Application(UserController useController, ProductController productController,
@@ -31,6 +34,7 @@ public class Application {
         this.productController = productController;
         this.orderController = orderController;
 
+        br = new BufferedReader(new InputStreamReader(System.in));
         scanner = new Scanner(System.in);
 
         currentCart = new Cart();
@@ -142,75 +146,80 @@ public class Application {
                 return userController.getUserByEmail(email);
 
             } else if (input == 2) {
-                clearConsole();
-                System.out.print("SIGNUP\nFirst name: ");
-                String firstName = scanner.next();
-
-                System.out.print("Last name: ");
-                String lastName = scanner.next();
-
-                System.out.print("Email: ");
-                String email = scanner.next();
-                while (!validateEmail(email)) {
+                try {
                     clearConsole();
-                    System.out.print("SIGNUP\nWrong email format!\nEmail: ");
-                    email = scanner.next();
-                }
-                clearConsole();
+                    System.out.print("SIGNUP\nFirst name: ");
+                    String firstName = br.readLine();
 
-                System.out.print("SIGNUP\nFirst name: " + firstName +
-                        "\nLast name: " + lastName +
-                        "\nEmail: " + email +
-                        "\nPassword: ");
-                String password = scanner.next();
-                while (!validatePassword(password)) {
-                    clearConsole();
-                    System.out.print("SIGNUP\nPassword should be longer than 7!\nPassword: ");
-                    password = scanner.next();
-                }
-                clearConsole();
+                    System.out.print("Last name: ");
+                    String lastName = br.readLine();
 
-                System.out.println("SIGNUP\nFirst name: " + firstName +
-                        "\nLast name: " + lastName +
-                        "\nEmail: " + email +
-                        "\nPassword: " + password + "\n");
-
-                if (getPasswordStrength(password)) {
-                    System.out.println("Your password is: " + getStrengthBar(90) + " Hard");
-                } else {
-                    System.out.println("Your password is: " + getStrengthBar(30) + " Weak");
-                }
-
-                System.out.print("\nAre you sure? (y/n): ");
-
-                switch (scanner.next()) {
-                    default: {
+                    System.out.print("Email: ");
+                    String email = scanner.next();
+                    while (!validateEmail(email)) {
                         clearConsole();
-                        System.out.println("Sign up has been canceled\n");
-                        continue;
+                        System.out.print("SIGNUP\nWrong email format!\nEmail: ");
+                        email = scanner.next();
                     }
-                    case "y": {
-                        clearConsole();
-                        user = new User(firstName, lastName, email, 2);
-                        boolean register = userController.register(user, password);
+                    clearConsole();
 
-                        if (register) {
+                    System.out.print("SIGNUP\nFirst name: " + firstName +
+                            "\nLast name: " + lastName +
+                            "\nEmail: " + email +
+                            "\nPassword: ");
+                    String password = scanner.next();
+                    while (!validatePassword(password)) {
+                        clearConsole();
+                        System.out.print("SIGNUP\nPassword should be longer than 7!\nPassword: ");
+                        password = scanner.next();
+                    }
+                    clearConsole();
+
+                    System.out.println("SIGNUP\nFirst name: " + firstName +
+                            "\nLast name: " + lastName +
+                            "\nEmail: " + email +
+                            "\nPassword: " + password + "\n");
+
+                    if (getPasswordStrength(password)) {
+                        System.out.println("Your password is: " + getStrengthBar(90) + " Hard");
+                    } else {
+                        System.out.println("Your password is: " + getStrengthBar(30) + " Weak");
+                    }
+
+                    System.out.print("\nAre you sure? (y/n): ");
+
+                    switch (scanner.next()) {
+                        default: {
                             clearConsole();
-                            System.out.println("Sign up has been completed successfully!\nRunning CLI...");
-                            return user;
-                        } else {
-                            clearConsole();
-                            user = null;
-                            System.out.println("Sign up stopped due to unknown error!\n");
+                            System.out.println("Sign up has been canceled\n");
                             continue;
                         }
+                        case "y": {
+                            clearConsole();
+                            user = new User(firstName, lastName, email, 2);
+                            boolean register = userController.register(user, password);
+
+                            if (register) {
+                                clearConsole();
+                                System.out.println("Sign up has been completed successfully!\nRunning CLI...");
+                                return user;
+                            } else {
+                                clearConsole();
+                                user = null;
+                                System.out.println("Sign up stopped due to unknown error!\n");
+                                continue;
+                            }
+                        }
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             } else {
                 clearConsole();
                 System.out.println("Wrong input!\n");
             }
         }
+
     }
 
     public void adminMenu() {
