@@ -11,6 +11,8 @@ import java.util.List;
 
 import db.interfaces.IDB;
 import entities.User;
+import entities.Client;
+import entities.Admin;
 import exceptions.NoDatabaseConnectionException;
 import exceptions.UserAlreadyExistsException;
 import repositories.interfaces.IUserRepository;
