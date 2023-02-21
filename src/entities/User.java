@@ -52,5 +52,17 @@ public abstract class User {
                 ", email = '" + email + '\'' +
                 ", role = '" + ((roleId == 1) ? "Admin" : "User") + "'}";
     }
+
+    public class Client extends User {
+        public Client(String firstName, String lastName, String email, int roleId){
+            super(firstName, lastName, email, roleId);
+        }
+
+        @Override
+
+        public void setId(int id){
+            super.setId(id);
+        }
+    }
     
 }
