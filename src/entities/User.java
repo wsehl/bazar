@@ -65,4 +65,15 @@ public abstract class User {
         }
     }
     
+    public class Admin extends User {
+        public Admin(String firstName, String lastName, String email, int roleId){
+            super(firstName, lastName, email, roleId);
+        }
+
+        @Override
+
+        public void setId(int id){
+            super.setId(id);
+        }
+    }
 }
