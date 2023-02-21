@@ -1,11 +1,11 @@
 package entities;
 
-public class User {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private int roleId;
+public abstract class User {
+    protected int id;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected int roleId;
 
     public User(String firstName, String lastName, String email, int roleId) {
         this.firstName = firstName;
@@ -18,7 +18,7 @@ public class User {
         this(firstName, lastName, email, roleId);
         setId(id);
     }
-
+    //public abstract void (should be, but setId(*not empty*))
     public void setId(int id) {
         this.id = id;
     }
@@ -52,5 +52,5 @@ public class User {
                 ", email = '" + email + '\'' +
                 ", role = '" + ((roleId == 1) ? "Admin" : "User") + "'}";
     }
-
+    
 }
