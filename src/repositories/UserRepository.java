@@ -28,7 +28,7 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsers() {
         Connection connection = null;
-
+        User user;
         try {
             connection = db.getConnection();
 
@@ -46,7 +46,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
 
@@ -69,7 +75,7 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsersByFirstName(String firstName) {
         Connection connection = null;
-
+        User user;
         try {
             connection = db.getConnection();
 
@@ -89,7 +95,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
 
@@ -112,6 +124,7 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsersByLastName(String lastName) {
         Connection connection = null;
+        User user;
 
         try {
             connection = db.getConnection();
@@ -132,7 +145,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
 
@@ -155,6 +174,7 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsersByRoleId(int roleId) {
         Connection connection = null;
+        User user;
 
         try {
             connection = db.getConnection();
@@ -175,7 +195,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
 
@@ -198,6 +224,7 @@ public class UserRepository implements IUserRepository {
 
     public User getUser(int id) {
         Connection connection = null;
+        User user;
 
         try {
             connection = db.getConnection();
@@ -216,7 +243,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 return user;
             }
@@ -237,6 +270,7 @@ public class UserRepository implements IUserRepository {
 
     public User getUserByEmail(String email) {
         Connection connection = null;
+        User user;
 
         try {
 
@@ -257,7 +291,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 return user;
             }
@@ -369,7 +409,7 @@ public class UserRepository implements IUserRepository {
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
             statement.setString(4, hashedPassword);
-            statement.setInt(5, user.getRoleId());
+            statement.setInt(5, 2);
 
             ResultSet resultSet = statement.executeQuery();
 
