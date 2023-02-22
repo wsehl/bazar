@@ -58,6 +58,6 @@ public class Order {
                 "orderId = " + orderId +
                 ", userId = " + userId +
                 ", orderDate = " + orderDate +
-                ", products = " + products + '}';
+                "}\nproducts = " + products;
     }
 }
