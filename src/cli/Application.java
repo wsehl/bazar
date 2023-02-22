@@ -6,7 +6,9 @@ import controllers.UserController;
 
 import entities.Product;
 import entities.User;
+import entities.Admin;
 import entities.Cart;
+import entities.Client;
 import entities.Order;
 
 import java.util.regex.Pattern;
@@ -99,12 +101,13 @@ public class Application {
 
     public void run() {
         currentUser = authMenu();
-        int userRole = currentUser.getRoleId();
 
-        if (userRole == 1) {
+        if (currentUser instanceof Admin) {
             adminMenu();
-        } else {
+        } else if (currentUser instanceof Client) {
             clientMenu();
+        } else {
+            System.out.println("bazar CLI can't be launched due to unknown error...");
         }
     }
 
@@ -196,7 +199,7 @@ public class Application {
                         }
                         case "y": {
                             clearConsole();
-                            user = new User(firstName, lastName, email, 2);
+                            user = new Client(firstName, lastName, email);
                             boolean register = userController.register(user, password);
 
                             if (register) {
