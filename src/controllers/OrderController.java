@@ -19,7 +19,7 @@ public class OrderController implements IOrderController {
         Order order = new Order(userId, orderProducts, new Date());
 
         if (orderProducts.size() == 0)
-            return "Order could not be added (no products in cart)\n";
+            return "Order could not be added (no products in cart)";
 
         int id = orderRepository.addOrder(order);
 
