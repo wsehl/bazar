@@ -29,7 +29,9 @@ public class UserRepository implements IUserRepository {
     public List<User> getUsers() {
         Connection connection = null;
         User user;
+
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users";
@@ -55,13 +57,16 @@ public class UserRepository implements IUserRepository {
                 }
 
                 users.add(user);
-
-                return users;
             }
+            
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
+
         } catch (NoDatabaseConnectionException e) {
             e.printStackTrace();
+
         } finally {
             try {
                 connection.close();
@@ -77,6 +82,7 @@ public class UserRepository implements IUserRepository {
         Connection connection = null;
         User user;
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE first_name = ?";
@@ -104,9 +110,10 @@ public class UserRepository implements IUserRepository {
                 }
 
                 users.add(user);
-
-                return users;
             }
+
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoDatabaseConnectionException e) {
@@ -127,6 +134,7 @@ public class UserRepository implements IUserRepository {
         User user;
 
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE last_name = ?";
@@ -154,9 +162,10 @@ public class UserRepository implements IUserRepository {
                 }
 
                 users.add(user);
-
-                return users;
             }
+
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoDatabaseConnectionException e) {
@@ -177,6 +186,7 @@ public class UserRepository implements IUserRepository {
         User user;
 
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE role_id = ?";
@@ -204,9 +214,10 @@ public class UserRepository implements IUserRepository {
                 }
 
                 users.add(user);
-
-                return users;
             }
+
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoDatabaseConnectionException e) {
@@ -227,6 +238,7 @@ public class UserRepository implements IUserRepository {
         User user;
 
         try {
+            
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE user_id = ?";
