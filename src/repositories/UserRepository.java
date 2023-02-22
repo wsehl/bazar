@@ -238,7 +238,7 @@ public class UserRepository implements IUserRepository {
         User user;
 
         try {
-            
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE user_id = ?";
@@ -453,14 +453,13 @@ public class UserRepository implements IUserRepository {
 
             String query = "DELETE FROM users WHERE user_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-
             statement.setInt(1, id);
 
-            statement.executeQuery();
+            statement.executeUpdate();
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         } catch (NoDatabaseConnectionException e) {
             e.printStackTrace();
         } finally {
