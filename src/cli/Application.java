@@ -43,18 +43,18 @@ public class Application {
         currentCart = new Cart();
     }
 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
             Pattern.CASE_INSENSITIVE);
 
-    public static final Pattern PASSWORD_STRENGTH_REGEX = Pattern
+    private static final Pattern PASSWORD_STRENGTH_REGEX = Pattern
             .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\S]{8,10}$");
 
-    public static boolean validateEmail(String emailStr) {
+    private static boolean validateEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
-    public static boolean validatePassword(String password) {
+    private static boolean validatePassword(String password) {
         if (password.length() < 8) {
             return false;
         }
@@ -62,17 +62,17 @@ public class Application {
         return true;
     }
 
-    public static boolean getPasswordStrength(String password) {
+    private static boolean getPasswordStrength(String password) {
         Matcher matcher = PASSWORD_STRENGTH_REGEX.matcher(password);
         return matcher.find();
     }
 
-    public static void clearConsole() {
+    private static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    public static String getStrengthBar(int percent) {
+    private static String getStrengthBar(int percent) {
         char barCompleteChar = '\u2588';
         char barIncompleteChar = '\u2591';
 
@@ -89,7 +89,7 @@ public class Application {
         return bar;
     }
 
-    public void printAppLogo() {
+    private void printAppLogo() {
         System.out.println(
                 "\n████████████████████████████████\n" +
                         "██░░░░░░░░░░░░███░░░░░░░░░░░░░██\n" +
@@ -112,7 +112,7 @@ public class Application {
         }
     }
 
-    public User authMenu() throws Exception {
+    private User authMenu() throws Exception {
         int input = -1;
         User user;
         clearConsole();
@@ -226,7 +226,7 @@ public class Application {
 
     }
 
-    public void adminMenu() throws Exception {
+    private void adminMenu() throws Exception {
         int input = -1;
 
         clearConsole();
@@ -605,7 +605,7 @@ public class Application {
         }
     }
 
-    public void clientMenu() throws Exception {
+    private void clientMenu() throws Exception {
         int input = -1;
 
         clearConsole();
