@@ -425,7 +425,7 @@ public class Application {
                         System.out.print("OUTPUT PRODUCT BY PRICE\nStart price: ");
                         double start = scanner.nextDouble();
 
-                        System.out.print(start + "\nEnd price: ");
+                        System.out.print("\nEnd price: ");
                         double end = scanner.nextDouble();
 
                         while (end < start) {
