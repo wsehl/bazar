@@ -12,6 +12,7 @@ import entities.Client;
 import entities.Order;
 
 import java.util.regex.Pattern;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -99,7 +100,7 @@ public class Application {
                         "████████████████████████████████");
     }
 
-    public void run() {
+    public void run() throws Exception {
         currentUser = authMenu();
 
         if (currentUser instanceof Admin) {
@@ -111,7 +112,7 @@ public class Application {
         }
     }
 
-    public User authMenu() {
+    public User authMenu() throws Exception {
         int input = -1;
         User user;
         clearConsole();
@@ -121,7 +122,7 @@ public class Application {
         System.out.println("________________________________\n");
 
         while (true) {
-            System.out.println("\n1 - Log in\n2 - Sign up");
+            System.out.println("1 - Log in\n2 - Sign up");
             input = scanner.nextInt();
 
             if (input == 1) {
@@ -225,7 +226,7 @@ public class Application {
 
     }
 
-    public void adminMenu() {
+    public void adminMenu() throws Exception {
         int input = -1;
 
         clearConsole();
@@ -539,13 +540,20 @@ public class Application {
                 clearConsole();
 
                 System.out.print("ADD NEW PRODUCT\nName: ");
-                String name = scanner.nextLine();
+                String name = br.readLine();
+ 
+                System.out.print("Price: ");
+                double price;
+                try {
+                    price = scanner.nextDouble();
+                } catch (InputMismatchException e) {
+                    clearConsole();
+                    System.out.print("Price should be a number!\nPrice: ");
+                    price = scanner.nextDouble();
+                }
 
-                System.out.print(name + "\nPrice: ");
-                double price = scanner.nextDouble();
-
-                System.out.print(price + "\nDescription: ");
-                String description = scanner.next();
+                System.out.print("Description: ");
+                String description = br.readLine();
 
                 if (name.length() < 2 && price < 0 && description.length() < 2) {
                     clearConsole();
@@ -597,7 +605,7 @@ public class Application {
         }
     }
 
-    public void clientMenu() {
+    public void clientMenu() throws Exception {
         int input = -1;
 
         clearConsole();
@@ -718,7 +726,7 @@ public class Application {
                 if (!existInCart) {
                     System.out.println("Product " + productId + " is not in cart\n");
                 }
-
+                
                 if (product != null && existInCart) {
                     currentCart.removeProduct(product);
                     System.out.println("Product " + productId + " removed from cart\n");
@@ -727,7 +735,7 @@ public class Application {
             // check cart
             else if (input == 4) {
                 clearConsole();
-                System.out.println(currentCart + "\n\n");
+                System.out.println(currentCart + "\n");
             }
             // create order
             else if (input == 5) {
