@@ -31,6 +31,8 @@ public class App {
             app.run();
         } catch (NoDatabaseConnectionException e) {
             System.out.println("No database connection. App will be closed.");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

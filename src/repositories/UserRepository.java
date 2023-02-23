@@ -11,6 +11,8 @@ import java.util.List;
 
 import db.interfaces.IDB;
 import entities.User;
+import entities.Client;
+import entities.Admin;
 import exceptions.NoDatabaseConnectionException;
 import exceptions.UserAlreadyExistsException;
 import repositories.interfaces.IUserRepository;
@@ -26,8 +28,10 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsers() {
         Connection connection = null;
+        User user;
 
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users";
@@ -44,16 +48,25 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
-
-                return users;
             }
+            
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
+
         } catch (NoDatabaseConnectionException e) {
             e.printStackTrace();
+
         } finally {
             try {
                 connection.close();
@@ -67,8 +80,9 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsersByFirstName(String firstName) {
         Connection connection = null;
-
+        User user;
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE first_name = ?";
@@ -87,12 +101,19 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
-
-                return users;
             }
+
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoDatabaseConnectionException e) {
@@ -110,8 +131,10 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsersByLastName(String lastName) {
         Connection connection = null;
+        User user;
 
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE last_name = ?";
@@ -130,12 +153,19 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
-
-                return users;
             }
+
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoDatabaseConnectionException e) {
@@ -153,8 +183,10 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getUsersByRoleId(int roleId) {
         Connection connection = null;
+        User user;
 
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE role_id = ?";
@@ -173,12 +205,19 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 users.add(user);
-
-                return users;
             }
+
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoDatabaseConnectionException e) {
@@ -196,8 +235,10 @@ public class UserRepository implements IUserRepository {
 
     public User getUser(int id) {
         Connection connection = null;
+        User user;
 
         try {
+
             connection = db.getConnection();
 
             String query = "SELECT * FROM users WHERE user_id = ?";
@@ -214,7 +255,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 return user;
             }
@@ -235,6 +282,7 @@ public class UserRepository implements IUserRepository {
 
     public User getUserByEmail(String email) {
         Connection connection = null;
+        User user;
 
         try {
 
@@ -255,7 +303,13 @@ public class UserRepository implements IUserRepository {
                 String userEmail = resultSet.getString("email");
                 int userRoleId = resultSet.getInt("role_id");
 
-                User user = new User(userId, userFirstName, userSecondName, userEmail, userRoleId);
+                if (userRoleId == 1) {
+                    user = new Admin(userId, userFirstName, userSecondName, userEmail);
+                } else if (userRoleId == 2) {
+                    user = new Client(userId, userFirstName, userSecondName, userEmail);
+                } else {
+                    user = null;
+                }
 
                 return user;
             }
@@ -367,7 +421,7 @@ public class UserRepository implements IUserRepository {
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
             statement.setString(4, hashedPassword);
-            statement.setInt(5, user.getRoleId());
+            statement.setInt(5, 2);
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -399,14 +453,13 @@ public class UserRepository implements IUserRepository {
 
             String query = "DELETE FROM users WHERE user_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-
             statement.setInt(1, id);
 
-            statement.executeQuery();
+            statement.executeUpdate();
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         } catch (NoDatabaseConnectionException e) {
             e.printStackTrace();
         } finally {

@@ -6,10 +6,13 @@ import controllers.UserController;
 
 import entities.Product;
 import entities.User;
+import entities.Admin;
 import entities.Cart;
+import entities.Client;
 import entities.Order;
 
 import java.util.regex.Pattern;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -40,18 +43,18 @@ public class Application {
         currentCart = new Cart();
     }
 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
             Pattern.CASE_INSENSITIVE);
 
-    public static final Pattern PASSWORD_STRENGTH_REGEX = Pattern
+    private static final Pattern PASSWORD_STRENGTH_REGEX = Pattern
             .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\S]{8,10}$");
 
-    public static boolean validateEmail(String emailStr) {
+    private static boolean validateEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
-    public static boolean validatePassword(String password) {
+    private static boolean validatePassword(String password) {
         if (password.length() < 8) {
             return false;
         }
@@ -59,17 +62,17 @@ public class Application {
         return true;
     }
 
-    public static boolean getPasswordStrength(String password) {
+    private static boolean getPasswordStrength(String password) {
         Matcher matcher = PASSWORD_STRENGTH_REGEX.matcher(password);
         return matcher.find();
     }
 
-    public static void clearConsole() {
+    private static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    public static String getStrengthBar(int percent) {
+    private static String getStrengthBar(int percent) {
         char barCompleteChar = '\u2588';
         char barIncompleteChar = '\u2591';
 
@@ -86,7 +89,7 @@ public class Application {
         return bar;
     }
 
-    public void printAppLogo() {
+    private void printAppLogo() {
         System.out.println(
                 "\n████████████████████████████████\n" +
                         "██░░░░░░░░░░░░███░░░░░░░░░░░░░██\n" +
@@ -97,18 +100,19 @@ public class Application {
                         "████████████████████████████████");
     }
 
-    public void run() {
+    public void run() throws Exception {
         currentUser = authMenu();
-        int userRole = currentUser.getRoleId();
 
-        if (userRole == 1) {
+        if (currentUser instanceof Admin) {
             adminMenu();
-        } else {
+        } else if (currentUser instanceof Client) {
             clientMenu();
+        } else {
+            System.out.println("bazar CLI can't be launched due to unknown error...");
         }
     }
 
-    public User authMenu() {
+    private User authMenu() throws Exception {
         int input = -1;
         User user;
         clearConsole();
@@ -118,7 +122,7 @@ public class Application {
         System.out.println("________________________________\n");
 
         while (true) {
-            System.out.println("\n1 - Log in\n2 - Sign up");
+            System.out.println("1 - Log in\n2 - Sign up");
             input = scanner.nextInt();
 
             if (input == 1) {
@@ -196,7 +200,7 @@ public class Application {
                         }
                         case "y": {
                             clearConsole();
-                            user = new User(firstName, lastName, email, 2);
+                            user = new Client(firstName, lastName, email);
                             boolean register = userController.register(user, password);
 
                             if (register) {
@@ -222,7 +226,7 @@ public class Application {
 
     }
 
-    public void adminMenu() {
+    private void adminMenu() throws Exception {
         int input = -1;
 
         clearConsole();
@@ -422,7 +426,7 @@ public class Application {
                         System.out.print("OUTPUT PRODUCT BY PRICE\nStart price: ");
                         double start = scanner.nextDouble();
 
-                        System.out.print(start + "\nEnd price: ");
+                        System.out.print("\nEnd price: ");
                         double end = scanner.nextDouble();
 
                         while (end < start) {
@@ -536,13 +540,20 @@ public class Application {
                 clearConsole();
 
                 System.out.print("ADD NEW PRODUCT\nName: ");
-                String name = scanner.nextLine();
+                String name = br.readLine();
+ 
+                System.out.print("Price: ");
+                double price;
+                try {
+                    price = scanner.nextDouble();
+                } catch (InputMismatchException e) {
+                    clearConsole();
+                    System.out.print("Price should be a number!\nPrice: ");
+                    price = scanner.nextDouble();
+                }
 
-                System.out.print(name + "\nPrice: ");
-                double price = scanner.nextDouble();
-
-                System.out.print(price + "\nDescription: ");
-                String description = scanner.next();
+                System.out.print("Description: ");
+                String description = br.readLine();
 
                 if (name.length() < 2 && price < 0 && description.length() < 2) {
                     clearConsole();
@@ -594,7 +605,7 @@ public class Application {
         }
     }
 
-    public void clientMenu() {
+    private void clientMenu() throws Exception {
         int input = -1;
 
         clearConsole();
@@ -715,7 +726,7 @@ public class Application {
                 if (!existInCart) {
                     System.out.println("Product " + productId + " is not in cart\n");
                 }
-
+                
                 if (product != null && existInCart) {
                     currentCart.removeProduct(product);
                     System.out.println("Product " + productId + " removed from cart\n");
@@ -724,7 +735,7 @@ public class Application {
             // check cart
             else if (input == 4) {
                 clearConsole();
-                System.out.println(currentCart + "\n\n");
+                System.out.println(currentCart + "\n");
             }
             // create order
             else if (input == 5) {
